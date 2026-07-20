@@ -10,7 +10,7 @@ import { methodologyItems } from '../data/methodology';
       <h2 class="main-title">The Three-Pillar System</h2>
       <p class="subtitle">My own structured, three-pillar system designed specifically for analytical minds who need clear rules to master Japanese.</p>
     </div>
-    <div class="methodology-grid">
+    <div class="grid grid-cols-3 gap-[30px] max-lg:grid-cols-2 max-md:grid-cols-1 max-md:gap-5">
       {methodologyItems.map((item) => <MethodCard {...item} />)}
     </div>
   </div>
