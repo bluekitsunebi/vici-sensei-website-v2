@@ -52,7 +52,12 @@
    lives as utilities directly in the markup instead.
    ============================================================ */
 @layer components {
-  .container {
+  /* Named site-container (not container) — Tailwind ships its own
+     reserved `.container` utility in the utilities layer, which always
+     wins over @layer components regardless of specificity and was
+     silently overriding this with its own breakpoint-locked max-width
+     and no auto-centering. */
+  .site-container {
     @apply max-w-[1100px] mx-auto;
   }
   .container-narrow {
@@ -75,10 +80,10 @@
     margin-bottom: clamp(18px, 3vw, 26px);
   }
   .main-title {
-    @apply text-5xl font-extrabold mt-5 mb-3 tracking-[-1.5px] max-md:text-[2.2rem];
+    @apply text-5xl font-extrabold mt-5 mb-3 tracking-[-1.5px] leading-normal max-md:text-[2.2rem];
   }
   .subtitle {
-    @apply text-text-muted text-xl max-w-[600px] mx-auto leading-relaxed max-md:text-[1.05rem];
+    @apply text-text-muted text-[1.2rem] max-w-[600px] mx-auto leading-[1.6] max-md:text-[1.05rem];
   }
   .highlight {
     @apply text-white font-semibold rounded px-1.5 py-0.5;
@@ -215,9 +220,10 @@
     box-shadow: 0 0 15px var(--color-accent-red-glow);
   }
   .nav-links {
-    @apply max-md:absolute max-md:top-full max-md:left-0 max-md:w-full max-md:bg-bg-main max-md:flex-col max-md:p-0 max-md:gap-0 max-md:border-b max-md:border-border-soft max-md:overflow-hidden;
+    @apply flex items-center gap-8;
     max-height: none;
     transition: max-height 0.3s ease-out;
+    @apply max-md:absolute max-md:top-full max-md:left-0 max-md:w-full max-md:bg-bg-main max-md:flex-col max-md:p-0 max-md:gap-0 max-md:border-b max-md:border-border-soft max-md:overflow-hidden;
   }
   @media (max-width: 768px) {
     .nav-links {
@@ -252,7 +258,7 @@
     @apply text-white font-bold mb-3.5 text-[1.35rem];
   }
   .method-card p {
-    @apply text-text-muted text-base leading-relaxed;
+    @apply text-text-muted text-base leading-[1.6];
   }
   .method-card strong,
   .method-card b {
@@ -318,7 +324,7 @@
     @apply text-white font-bold mb-2.5 text-[1.4rem] tracking-[-0.5px];
   }
   .roadmap-card p {
-    @apply text-text-muted text-[1.05rem] leading-relaxed;
+    @apply text-text-muted text-[1.05rem] leading-[1.6];
   }
   .destination-card {
     background: linear-gradient(135deg, rgb(255 34 0 / 0.1) 0%, rgb(17 24 39 / 0.8) 100%);
@@ -365,7 +371,7 @@
     transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
   }
   .faq-content p {
-    @apply text-text-muted leading-relaxed text-[1.05rem];
+    @apply text-text-muted leading-[1.6] text-[1.05rem];
     padding: 0 24px 24px 24px;
   }
   .faq-item.active {
@@ -430,7 +436,7 @@
     filter: brightness(1.2);
   }
   .contact-card .description {
-    @apply text-text-muted leading-relaxed mb-6;
+    @apply text-text-muted leading-[1.6] mb-6;
   }
   .action-text {
     @apply text-white font-bold text-[0.95rem] inline-flex items-center;
