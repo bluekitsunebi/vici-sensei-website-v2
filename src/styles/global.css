@@ -462,6 +462,9 @@
     border-top: 1px solid rgb(255 255 255 / 0.02);
     background-color: #070a12;
   }
+  .minimal-footer--home {
+    padding-bottom: 150px;
+  }
   .footer-links {
     @apply mt-2;
   }
@@ -471,6 +474,73 @@
   }
   .footer-links a:hover {
     @apply text-text-muted;
+  }
+  .footer-anpc-badge {
+    @apply flex justify-center mt-6 opacity-60 transition-opacity duration-200;
+  }
+  .footer-anpc-badge:hover {
+    @apply opacity-100;
+  }
+  .footer-anpc-badge img {
+    @apply h-[38px] w-auto rounded;
+  }
+
+  /* LEGAL PAGES */
+  .legal-updated {
+    @apply text-center text-text-muted text-[0.9rem] mb-10 -mt-8;
+  }
+  .legal-content h2 {
+    @apply text-white font-bold text-[1.5rem] tracking-[-0.3px] mt-12 mb-4;
+  }
+  .legal-content h2:first-child {
+    @apply mt-0;
+  }
+  .legal-content h3 {
+    @apply text-white font-bold text-[1.15rem] mt-8 mb-3;
+  }
+  .legal-content p {
+    @apply text-text-muted leading-[1.7] mb-4;
+  }
+  .legal-content ul,
+  .legal-content ol {
+    @apply text-text-muted leading-[1.7] mb-4 pl-6;
+  }
+  .legal-content ul {
+    @apply list-disc;
+  }
+  .legal-content ol {
+    @apply list-decimal;
+  }
+  .legal-content li {
+    @apply mb-2;
+  }
+  .legal-content strong {
+    @apply text-white font-semibold;
+  }
+  .legal-content a {
+    @apply text-accent-blue font-semibold underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s ease;
+  }
+  .legal-content a:hover {
+    color: var(--color-accent-red);
+  }
+  .legal-company-card {
+    @apply bg-bg-cards border border-border-soft rounded-2xl mb-8;
+    padding: 30px 35px;
+    backdrop-filter: blur(10px);
+  }
+  .legal-company-card dl {
+    @apply grid grid-cols-1 gap-4;
+  }
+  .legal-company-card div {
+    @apply flex flex-col gap-0.5 max-sm:gap-1 sm:flex-row sm:items-baseline sm:gap-2;
+  }
+  .legal-company-card dt {
+    @apply text-text-muted text-[0.85rem] font-semibold tracking-[0.3px] sm:w-[220px] sm:shrink-0;
+  }
+  .legal-company-card dd {
+    @apply text-white m-0;
   }
 
   /* FLOATING CTA */

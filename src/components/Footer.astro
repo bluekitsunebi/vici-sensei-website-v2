@@ -1,10 +1,16 @@
 ---
+const isHome = Astro.url.pathname === '/';
 ---
 
-<footer class="minimal-footer">
-  <p>&copy; 2026 The Japanese Fluency Academy. All Rights Reserved.</p>
+<footer class:list={['minimal-footer', { 'minimal-footer--home': isHome }]}>
+  <p>&copy; 2026 Vici Sensei. The Japanese Fluency Academy. All Rights Reserved.</p>
   <div class="footer-links">
     <a href="/privacy-policy">Privacy Policy</a>
-    <a href="/terms-and-conditions">Terms of Service</a>
+    <a href="/terms-and-conditions">Terms and Conditions</a>
+  </div>
+  <div class="footer-anpc-badge">
+    <a href="https://reclamatiisal.anpc.ro/" target="_blank" rel="noopener noreferrer" aria-label="Alternative Dispute Resolution (SAL) — ANPC">
+      <img src="/images/anpc-sal.svg" alt="Alternative Dispute Resolution (SAL) — ANPC" width="250" height="50" loading="lazy" />
+    </a>
   </div>
 </footer>
