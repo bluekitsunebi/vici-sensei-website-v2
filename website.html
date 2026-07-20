@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Japanese Fluency Academy — Escape Traditional Classrooms</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* RESET & CORE CONFIGURATIONS */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+    }
+    :root {
+      --bg-main: #0b0f19;
+      --bg-cards: rgba(17, 24, 39, 0.7);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --accent-red: #ff4a5a;
+      --accent-red-glow: rgba(255, 74, 90, 0.35);
+      --accent-blue: #00d2ff;
+      --accent-gold: #ffd200;
+      --border-soft: rgba(255, 255, 255, 0.05);
+    }
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* GLOBAL UTILITIES */
+    .section-padding {
+      padding: 100px 24px;
+      border-top: 1px solid var(--border-soft);
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .container-narrow {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .header-center {
+      text-align: center;
+      margin-bottom: 70px;
+    }
+    .badge {
+      background: rgba(255, 74, 90, 0.1);
+      border: 1px solid rgba(255, 74, 90, 0.3);
+      color: var(--accent-red);
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      display: inline-block;
+    }
+    .first-badge {
+      margin-bottom: clamp(18px, 3vw, 26px);
+    }
+    .main-title {
+      font-size: 3rem;
+      font-weight: 800;
+      margin: 20px 0 12px 0;
+      letter-spacing: -1.5px;
+      background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+    .highlight {
+      color: #ffffff;
+      font-weight: 600;
+      background: linear-gradient(120deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .highlight.gold {
+      color: var(--accent-gold);
+      font-weight: 700;
+    }
+    
+    /* SMOOTH GLOW TRANSITION SYSTEM */
+    .card-glow {
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+    }
+
+    /* NAVIGATION BAR STYLES */
+    .site-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(11, 15, 25, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-soft);
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: -0.5px;
+    }
+    .logo-icon {
+      font-size: 1.2rem;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .nav-link {
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+    .nav-link:hover {
+      color: #ffffff;
+    }
+    .nav-cta {
+      background: rgba(255, 74, 90, 0.1);
+      border: 1px solid rgba(255, 74, 90, 0.3);
+      color: var(--accent-red);
+      padding: 8px 20px;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      transition: all 0.2s ease;
+    }
+    .nav-cta:hover {
+      background: var(--accent-red);
+      color: #ffffff;
+      box-shadow: 0 0 15px var(--accent-red-glow);
+    }
+    .mobile-toggle {
+      display: none;
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+    }
+
+    /* HERO SECTION & LAYOUT SYSTEM */
+    .hero-section {
+      position: relative;
+      padding: 180px 24px 110px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: radial-gradient(circle at 50% 20%, rgba(255, 74, 90, 0.08) 0%, transparent 50%);
+    }
+    .hero-container {
+      max-width: 850px;
+    }
+    .hero-title {
+      font-size: clamp(2.3rem, 6vw + 1rem, 4rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -1.5px;
+      margin: 0;
+      color: #ffffff;
+      margin-bottom: clamp(24px, 4vw, 32px); 
+    }
+    .hero-line-main {
+  /* Change 1: Push the unbolded text down to a muted slate grey */
+  color: #94a3b8;       
+  font-size: clamp(1.15rem, 1vw + 0.9rem, 1.35rem);
+  line-height: 1.6;
+  /* Change 2: Drop base text to a lighter, cleaner weight */
+  font-weight: 500;     
+  max-width: min(540px, 100%); 
+  margin: 0 auto 32px auto;
+  padding: 0 16px;
+}
+
+.hero-line-main strong {
+  /* Change 3: Force the bolded words to stand out in brilliant pure white */
+  color: #ffffff;       
+  /* Change 4: Max out the font weight to ultra-bold */
+  font-weight: 700;     
+  /* Optional: A subtle text-shadow to make the white text physically crisp */
+  text-shadow: 0 0 1px rgba(255,255,255,0.2); 
+} 
+    .hero-line-italic {
+      font-size: clamp(1.05rem, 0.5vw + 0.95rem, 1.15rem);
+      color: #94a3b8;
+      font-style: italic;
+      line-height: 1.5;
+      margin: 0;
+    }
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(12px, 2vw, 20px);
+      flex-wrap: wrap;
+      margin-top: clamp(28px, 6vw, 40px); 
+    }
+    .btn-primary {
+      background: var(--accent-red);
+      color: #ffffff;
+      padding: 16px 36px;
+      font-weight: 700;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      box-shadow: 0 0 30px rgba(255, 74, 90, 0.4);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 40px rgba(255, 74, 90, 0.6);
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      padding: 16px 36px;
+      font-weight: 700;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* CORE METHODOLOGY GRID */
+    .methodology-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+    .method-card {
+      position: relative;
+      background: var(--bg-cards);
+      border: 1px solid var(--border-soft);
+      border-radius: 16px;
+      padding: 40px 30px;
+      backdrop-filter: blur(10px);
+      transition: transform 0.4s ease, border-color 0.4s ease-in-out;
+    }
+    .method-card.active-glow {
+      border-color: var(--accent-blue) !important;
+    }
+    .method-card.active-glow .card-glow {
+      opacity: 1 !important;
+      box-shadow: 0 10px 30px -10px var(--accent-blue) !important;
+    }
+    .method-num {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--accent-blue);
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      display: block;
+    }
+    .method-card h3 {
+      font-size: 1.35rem;
+      color: #ffffff;
+      margin-bottom: 14px;
+      font-weight: 700;
+    }
+    .method-card p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .method-card strong, 
+    .method-card b {
+      color: #ffffff !important;   /* Forces the bold words to become crisp, pure white */
+      font-weight: 600 !important; /* Maxes out the thickness so it pops against the grey */
+    }
+
+    /* PREMIUM TIMELINE */
+    .glow-timeline {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      padding-left: 40px;
+    }
+    .timeline-line {
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      bottom: 10px;
+      width: 2px;
+      background: linear-gradient(to bottom, 
+        #e52b2b 0%, #ff4a5a 9%, #ff007a 18%, #9d00ff 27%, #0059ff 36%, 
+        #00bfff 45%, #00e5bc 54%, #00ff55 63%, #e6b800 72%, #ffd200 81%, 
+        #ff6a00 90%, #ff2200 100%
+      );
+      box-shadow: 0 0 15px rgba(255, 74, 90, 0.15);
+    }
+    .roadmap-card {
+      position: relative;
+      background: var(--bg-cards);
+      border: 1px solid var(--border-soft);
+      border-radius: 16px;
+      padding: 28px;
+      backdrop-filter: blur(10px);
+      transition: transform 0.4s ease, border-color 0.4s ease-in-out;
+    }
+    .roadmap-card.active-glow {
+      border-color: var(--accent-glow) !important;
+    }
+    .roadmap-card.active-glow .card-glow {
+      opacity: 1 !important;
+      box-shadow: 0 10px 30px -10px var(--accent-glow) !important;
+    }
+    .card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .card-badge {
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 6px 14px;
+      border-radius: 8px;
+      border-left: 3px solid var(--accent-glow);
+    }
+    .card-badge.current {
+      background: #ff2200;
+      color: #ffffff;
+      border-left: none;
+      box-shadow: 0 0 15px rgba(255, 34, 0, 0.5);
+    }
+    .card-icon {
+      position: absolute;
+      left: -44px;
+      width: 26px;
+      height: 26px;
+      background: var(--bg-main);
+      border: 2px solid var(--accent-glow);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      box-shadow: 0 0 10px var(--accent-glow);
+      z-index: 2;
+    }
+    .roadmap-card h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 0 0 10px 0;
+      letter-spacing: -0.5px;
+      color: #ffffff;
+    }
+    .roadmap-card p {
+      margin: 0;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+    .destination-card {
+      background: linear-gradient(135deg, rgba(255, 34, 0, 0.1) 0%, rgba(17, 24, 39, 0.8) 100%);
+      border: 1px solid rgba(255, 34, 0, 0.2);
+    }
+
+    /* ACCORDION FAQ SECTION */
+    .faq-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .faq-item {
+      background: var(--bg-cards);
+      border: 1px solid var(--border-soft);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+    .faq-trigger {
+      width: 100%;
+      padding: 24px;
+      background: transparent;
+      border: none;
+      text-align: left;
+      color: #ffffff;
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .faq-icon-cross {
+      width: 18px;
+      height: 18px;
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+    .faq-icon-cross::before, .faq-icon-cross::after {
+      content: '';
+      position: absolute;
+      background: var(--text-muted);
+      transition: background 0.2s ease;
+    }
+    .faq-icon-cross::before { top: 8px; left: 0; width: 18px; height: 2px; }
+    .faq-icon-cross::after { left: 8px; top: 0; width: 2px; height: 18px; }
+    
+    .faq-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
+    }
+    .faq-content p {
+      padding: 0 24px 24px 24px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-size: 1.05rem;
+    }
+    .faq-item.active {
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+    .faq-item.active .faq-icon-cross {
+      transform: rotate(45deg);
+    }
+    .faq-item.active .faq-icon-cross::before, .faq-item.active .faq-icon-cross::after {
+      background: var(--accent-red);
+    }
+    .faq-item.active .faq-content {
+      max-height: 1000px;
+      transition: max-height 0.3s cubic-bezier(1, 0, 1, 0);
+    }
+
+    /* PRICING SECTION STYLES */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .price-card {
+      position: relative;
+      background: var(--bg-cards);
+      border: 1px solid var(--border-soft);
+      border-radius: 20px;
+      padding: 45px 35px;
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.4s ease, border-color 0.4s ease-in-out;
+    }
+    .price-card:hover {
+      border-color: var(--accent-glow) !important;
+      transform: translateY(-4px);
+    }
+    .price-card:hover .card-glow {
+      opacity: 1 !important;
+      box-shadow: 0 15px 35px -15px var(--accent-glow) !important;
+    }
+    .price-card.featured {
+      background: linear-gradient(135deg, rgba(255, 74, 90, 0.07) 0%, rgba(17, 24, 39, 0.85) 100%);
+      border: 1px solid rgba(255, 74, 90, 0.3);
+    }
+    .price-header {
+      margin-bottom: 24px;
+    }
+    .price-header h3 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+    .price-amount {
+      font-size: 3.2rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -1.5px;
+      margin: 15px 0;
+    }
+    .price-amount span {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+    .price-features {
+      list-style: none;
+      margin: 24px 0 35px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .price-features li {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .price-features li::before {
+      content: "✓";
+      color: var(--accent-red);
+      font-weight: 900;
+    }
+    .price-card.featured .price-features li::before {
+      color: var(--accent-red);
+    }
+
+    /* CONTACT & SOCIAL CHANNELS */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+    .contact-card {
+      position: relative;
+      background: var(--bg-cards);
+      border: 1px solid var(--border-soft);
+      border-radius: 16px;
+      padding: 35px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      backdrop-filter: blur(10px);
+      transition: transform 0.4s ease, border-color 0.4s ease-in-out;
+    }
+    .contact-card:hover {
+      border-color: var(--accent-glow) !important;
+      transform: translateY(-4px);
+    }
+    .contact-card:hover .card-glow {
+      opacity: 1 !important;
+      box-shadow: 0 15px 35px -15px var(--accent-glow) !important;
+    }
+    .contact-icon-wrapper {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      width: 55px;
+      height: 55px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      transition: all 0.3s ease;
+    }
+    .contact-card:hover .contact-icon-wrapper {
+      background: var(--accent-glow) !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 20px var(--accent-glow) !important;
+      border-color: transparent !important;
+    }
+    .contact-card:hover .action-text {
+      transform: translateX(5px);
+      color: var(--accent-glow) !important;
+      filter: brightness(1.2);
+    }
+    .contact-svg {
+      width: 26px;
+      height: 26px;
+    }
+    .contact-card h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 0 0 4px 0;
+      letter-spacing: -0.5px;
+      color: #ffffff;
+    }
+    .contact-card .handle {
+      margin: 0 0 16px 0;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--accent-glow);
+      filter: brightness(1.2);
+    }
+    .contact-card .description {
+      margin: 0 0 24px 0;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+    .action-text {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    /* FOOTER */
+    .minimal-footer {
+      text-align: center;
+      padding: 50px 24px;
+      color: #4b5563;
+      font-size: 0.85rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.02);
+      background-color: #070a12;
+    }
+    .footer-links {
+      margin-top: 8px;
+    }
+    .footer-links a {
+      margin: 0 12px;
+      transition: color 0.2s ease;
+    }
+    .footer-links a:hover {
+      color: var(--text-muted);
+    }
+
+    /* FLOATING CTA BAR */
+    .floating-cta-bar {
+      position: fixed;
+      bottom: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 40px);
+      max-width: 480px;
+      background: rgba(11, 15, 25, 0.85);
+      border: 1px solid rgba(255, 74, 90, 0.25);
+      backdrop-filter: blur(16px);
+      padding: 14px 22px;
+      border-radius: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 25px rgba(255, 74, 90, 0.15);
+      z-index: 999;
+      transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+    }
+    .floating-cta-bar.reveal {
+      bottom: 24px;
+    }
+    .floating-text {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #ffffff;
+    }
+    .floating-btn {
+      background: var(--accent-red);
+      color: #ffffff;
+      padding: 10px 24px;
+      font-weight: 700;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      box-shadow: 0 0 15px var(--accent-red-glow);
+    }
+
+    /* RESPONSIVE LAYOUT RESPONSES */
+    @media (max-width: 992px) {
+      .hero-title { font-size: 3.2rem; }
+      .methodology-grid, .contact-grid { grid-template-columns: repeat(2, 1fr); }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 500px; }
+    }
+    @media (max-width: 768px) {
+      .section-padding { padding: 80px 20px; }
+      .main-title { font-size: 2.2rem; }
+      .hero-title { font-size: 2.5rem; }
+      .hero-subtitle, .subtitle { font-size: 1.05rem; }
+      .methodology-grid, .contact-grid { grid-template-columns: 1fr; gap: 20px; }
+      .glow-timeline { padding-left: 30px; }
+      .timeline-line { left: 5px; }
+      .card-icon { left: -36px; width: 22px; height: 22px; font-size: 0.8rem; }
+      .floating-text { display: none; }
+      .floating-cta-bar { max-width: 280px; justify-content: center; padding: 10px; }
+      
+      .mobile-toggle {
+        display: block;
+      }
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--bg-main);
+        flex-direction: column;
+        padding: 0;
+        gap: 0;
+        border-bottom: 1px solid var(--border-soft);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+      }
+      .nav-links.active {
+        max-height: 300px;
+      }
+      .nav-link, .nav-cta {
+        width: 100%;
+        text-align: center;
+        padding: 20px;
+        border-top: 1px solid var(--border-soft);
+        border-radius: 0;
+      }
+      .nav-cta {
+        background: transparent;
+        border: none;
+        border-top: 1px solid var(--border-soft);
+      }
+    }
+    @media (max-width: 480px) {
+      .hero-line-main {
+        margin-bottom: 18px !important; 
+      }
+      .hero-cta-group {
+        flex-direction: column;
+        align-items: stretch;
+        max-width: 320px;
+        margin-left: auto;
+        margin-right: auto;
+        gap: 12px;
+      }
+      .btn-primary, .btn-secondary {
+        width: 100%;
+        padding: 16px 0;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION BAR -->
+  <nav class="site-nav">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">
+        <span class="logo-icon">🇯🇵</span> Vici Sensei
+      </a>
+      
+      <div class="nav-links" id="navLinks">
+        <a href="#methodology" class="nav-link">Method</a>
+        <a href="#roadmap" class="nav-link">Story</a>
+        <a href="#pricing" class="nav-link">Pricing</a>
+        <a href="#connect" class="nav-cta">Apply For A Seat</a>
+      </div>
+
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </nav>
+  
+  <div class="floating-cta-bar" id="floatingCta">
+    <span class="floating-text">Done with surface-level study?</span>
+    <a href="#pricing" class="floating-btn">Apply For A Seat</a>
+  </div>
+
+  <!-- HERO SECTION -->
+  <header class="hero-section">
+    <div class="hero-container">
+      <span class="badge first-badge">NOW ACCEPTING GLOBAL SEATS</span>
+      <h1 class="hero-title">Japanese For The <br>Logic-Driven.</h1>
+      <div class="hero-text-stack">
+        <p class="hero-line-main">I guide sharp minds towards fluency through my <strong>structure-first live sessions</strong> and <strong>carefully designed learning environment</strong>.</p>
+        <p class="hero-line-italic">Since marketing fools 90% of people, I'll take the ones who actually think.</p>
+      </div>
+      <div class="hero-cta-group">
+        <a href="#pricing" class="btn-primary">Apply For A Seat</a>
+        <a href="#roadmap" class="btn-secondary">View My 16-Year Journey</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- METHODOLOGY -->
+  <section id="methodology" class="section-padding">
+    <div class="container">
+      <div class="header-center">
+        <span class="badge">WHY WE ARE DIFFERENT</span>
+        <h2 class="main-title">The Three-Pillar System</h2>
+        <p class="subtitle">My own structured, three-pillar system designed specifically for analytical minds who need clear rules to master Japanese.</p>
+      </div>
+      <div class="methodology-grid">
+        <div class="method-card" style="--accent-blue: #00d2ff;">
+          <div class="card-glow"></div>
+          <span class="method-num">PILLAR 01</span>
+          <h3>The Structural Pillar</h3>
+          <p>In the live sessions we use a <strong>structure-first approach</strong>, breaking down Japanese grammar into a <strong>precise, logical system</strong> with clear rules of construction. You will understand exactly how sentences are built so you can create your own correct sentences from scratch.</p>
+        </div>
+        <div class="method-card" style="--accent-blue: #ff7a00;">
+          <div class="card-glow"></div>
+          <span class="method-num">PILLAR 02</span>
+          <h3>The Practice Pillar</h3>
+          <p>We put theory into practice by <strong>solving exam papers (JLPT)</strong> in their entirety. I guide you step-by-step through complex reading and listening sections, dissecting your mistakes and <strong>explaining the exact logic</strong> behind correct answers until your execution is flawless.</p>
+        </div>
+        <div class="method-card" style="--accent-blue: #00ff66;">
+          <div class="card-glow"></div>
+          <span class="method-num">PILLAR 03</span>
+          <h3>The Grinding Pillar</h3>
+          <p>Our live session time is too valuable to spend repeating words. You use our <strong>dedicated vocabulary app</strong> (built on a <strong>spaced repetition system</strong>) to learn words and Kanji on your own, efficiently. This ensures long-term retention with optimal daily effort.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE ROADMAP -->
+  <section id="roadmap" class="section-padding" style="background-color: #090d16;">
+    <div class="container-narrow">
+      <div class="header-center">
+        <span class="badge">THE ORIGIN STORY</span>
+        <h2 class="main-title">My 16-Year Journey</h2>
+        <p class="subtitle">The story of a passionate anime fan who bypassed traditional limitations to attain true fluency in Japanese.</p>
+      </div>
+
+      <div class="glow-timeline">
+        <div class="timeline-line"></div>
+
+        <div class="roadmap-card" style="--accent-glow: #e52b2b;">
+          <div class="card-glow"></div>
+          <div class="card-meta">
+            <div class="card-badge">2010 - 2015</div>
+            <div class="card-icon">🌸</div>
+          </div>
+          <div class="card-body">
+            <h3>The Spark</h3>
+            <p>Fell completely in love with anime and watched <span class="highlight">hundreds of series</span> even before beginning my journey.</p>
+          </div>
+        </div>
+
+        <div class="roadmap-card" style="--accent-glow: #ff4a5a;">
+          <div class="card-glow"></div>
+          <div class="card-meta">
+            <div class="card-badge">2015</div>
+            <div class="card-icon">💡</div>
+          </div>
+          <div class="card-body">
+            <h3>Going Self-Taught</h3>
+            <p>I tried attending all sorts of Japanese classes at first, but figuring out the pace was <span class="highlight">too slow for my motivated self</span>, I quit each one after a few weeks. I decided to learn on my own, combining internet research with <span class="highlight">daily real-world conversations</span> with native speakers.</p>
+          </div>
+        </div>
+
+        <div class="roadmap-card" style="--accent-glow: #ff007a;">
+          <div class="card-glow"></div>
+          <div class="card-meta">
+            <div class="card-badge">2016</div>
+            <div class="card-icon">✈️</div>
+          </div>
+          <div class="card-body">
+            <h3>The Japan Breakthrough</h3>
+            <p>At the age of 18, I was blessed with a gift that changed everything: my <span class="highlight">first trip to Japan</span>. I swore to myself I would study even harder and go there again.</p>
+          </div>
+        </div>
+
+        <div class="roadmap-card" style="--accent-glow: #9d00ff;">
+          <div class="card-glow"></div>
+          <div class="card-meta">
+            <div class="card-badge">2018</div>
+            <div class="card-icon">💼</div>
+          </div>
+          <div class="card-body">
+            <h3>The Tourist Guide</h3>
+            <p>Started working as a <span class="highlight">tour guide and interpreter</span> for Japanese visitors, putting my conversational skills to the ultimate live test.</p>
+          </div>
+        </div>
+
+        <div class="roadmap-card" style="--accent-glow: #0059ff;">
+          <div class="card-glow"></div>
+          <div class="card-meta">
+            <div class="card-badge">2018</div>
+            <div class="card-icon">🎤</div>
+          </div>
+          <div class="card-body">
+            <h3>Starting as a Teacher</h3>
+            <p>Started teaching Japanese in my <span class="highlight">spare time</span>, passing on the conversational shortcuts I used to break through.</p>
+          </div>
+        </div>
+
+        <div class="roadmap-card" style="--accent-glow: #00bfff;">
+          <div class="card-glow"></div>
+          <div class="card-meta">
+            <div class="card-badge">2019</div>
+            <div class="card-icon">📺</div>
+          </div>
+          <div class="card-body">
+            <h3>The "Tokyo TV" Moment</h3>
+            <p>Having my Japanese level acknowledged by the tourism agency I was collaborating with, I was recommended for a Tokyo TV interview and thus was <span class="highlight">featured on Japan's national television</span>.</p>
+          </div>
+        </div>
+
+        <div class="roadmap-card" style="--accent-glow: #00e5bc;">
+          <div class="card-glow"></div>
+          <div class="card-meta">
+            <div class="card-badge">2020</div>
+            <div class="card-icon">💻</div>
+          </div>
+          <div class="card-body">
+            <h3>The IT Stage</h3>
+            <p>Started working as a software programmer (and continued for 3 years), during which I <span class="highlight">directly collaborated with native Japanese speakers</span> on software development projects.</p>
+          </div>
+        </div>
+
+        <div class="roadmap-card" style="--accent-glow: #00ff55;">
+          <div class="card-glow"></div>
+          <div class="card-meta">
+            <div class="card-badge">2021</div>
+            <div class="card-icon">🎓</div>
+          </div>
+          <div class="card-body">
+            <h3>The Academic Reality Check</h3>
+            <p>Graduated from a university's Japanese-English department, which unfortunately <span class="highlight">didn't contribute whatsoever</span> to improving my Japanese. It completely confirmed to me that the traditional academic system is broken.</p>
+          </div>
+        </div>
+
+        <div class="roadmap-card" style="--accent-glow: #e6b800;">
+          <div class="card-glow"></div>
+          <div class="card-meta">
+            <div class="card-badge">2023</div>
+            <div class="card-icon">🌍</div>
+          </div>
+          <div class="card-body">
+            <h3>Going Full-Time</h3>
+            <p>I started my own company, transitioning to making a <span class="highlight">full-time living solely by teaching Japanese online</span>.</p>
+          </div>
+        </div>
+
+        <div class="roadmap-card" style="--accent-glow: #ffd200;">
+          <div class="card-glow"></div>
+          <div class="card-meta">
+            <div class="card-badge">2025</div>
+            <div class="card-icon">🚫</div>
+          </div>
+          <div class="card-body">
+            <h3>Rejecting Academia</h3>
+            <p>Being offered a prestigious position to become a university teacher of the Japanese language, <span class="highlight">I gracefully turned it down</span>. I chose to focus entirely on my current students and my path as an independent teacher.</p>
+          </div>
+        </div>
+
+        <div class="roadmap-card" style="--accent-glow: #ff6a00;">
+          <div class="card-glow"></div>
+          <div class="card-meta">
+            <div class="card-badge">2025</div>
+            <div class="card-icon">🏯</div>
+          </div>
+          <div class="card-body">
+            <h3>Living the Dream</h3>
+            <p>Spent <span class="highlight">3 beautiful months living in Japan</span> while working remotely, alongside my wife.</p>
+          </div>
+        </div>
+
+        <div class="roadmap-card destination-card" style="--accent-glow: #ff2200;">
+          <div class="card-glow"></div>
+          <div class="card-meta">
+            <div class="card-badge current">NOW</div>
+            <div class="card-icon">🔥</div>
+          </div>
+          <div class="card-body">
+            <h3>Continuing the Mission</h3>
+            <p>Having been studying Japanese for over <span class="highlight gold">11 years and teaching it for 8</span>, I continue to teach Japanese to students all around the world, bringing them from total beginners to <span class="highlight gold">full-fledged speakers of the language</span>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- PRICING -->
+<div class="header-center" style="margin-bottom: 50px; text-align: center;">
+  <span class="badge" style="font-size: 0.75rem; background: rgba(255, 74, 90, 0.1); color: #ff4a5a; padding: 6px 16px; border-radius: 100px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">START YOUR JOURNEY</span>
+  
+  <!-- Clear Section Marker -->
+  <h2 class="main-title" style="color: #fff; font-size: 2.5rem; font-weight: 800; margin-top: 15px; margin-bottom: 0; letter-spacing: -0.5px;">Transparent Pricing</h2>
+  
+  <!-- The Ultimate Psychological Hook (Subheader) 
+  <p class="subtitle" style="color: #fff; font-size: 1.35rem; font-weight: 600; max-width: 600px; margin: 15px auto 8px; letter-spacing: -0.2px;">
+    Staying average costs way more!
+  </p> -->
+  
+  <!-- Supporting Value Statement -->
+    <p class="subtitle" style="color: var(--text-muted); max-width: 600px; margin: 15px auto 0;"> Get everything you need to master Japanese, built into one seamless, high-touch ecosystem.</p>
+     </div>
+     
+     <!-- Cardul principal Premium (Section-Card Layout) -->
+     <div class="pricing-card-container" style="max-width: 550px; margin: 0 auto; background: #0f1524; border-radius: 20px; border: 1px solid rgba(255, 74, 90, 0.15); box-shadow: 0 20px 40px rgba(0,0,0,0.45); overflow: hidden;">
+       
+       <!-- Partea de sus: Detalii și Preț -->
+       <div style="padding: 45px 45px 35px 45px;">
+         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+           <h3 style="margin: 0; font-size: 1.8rem; color: #fff; font-weight: 700;">Full-Access Mentorship</h3>
+           <span class="badge" style="font-size: 0.75rem; padding: 5px 12px; background: var(--accent-red); color: #fff; font-weight: bold; border-radius: 20px; letter-spacing: 0.5px;">ALL-INCLUDED</span>
+         </div>
+         <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.6; margin: 0 0 30px 0;">Bring your motivation with you. Everything else is taken care of.</p>
+         
+         <!-- Prețuri Dinamice -->
+         <div class="price-amount" style="margin-bottom: 8px;">
+           <span class="price-num" id="base-price" style="font-size: 3rem; font-weight: 800; color: #fff; letter-spacing: -1px;">$129</span><span style="color: var(--text-muted); font-size: 1.1rem;"> / 4 weeks</span>
+         </div>
+       </div>
+       
+       <!-- Partea de mijloc: Secțiunea de caracteristici cu fundal contrastant subtil -->
+       <div style="background: rgba(0, 0, 0, 0.15); padding: 40px 45px; border-top: 1px solid rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.03);">
+         <h4 style="color: rgba(255,255,255,0.4); font-size: 0.85rem; font-weight: 700; margin: 0 0 24px 0; letter-spacing: 1.5px; text-transform: uppercase;">What's included in your program:</h4>
+         
+         <ul class="price-features" style="margin: 0; padding: 0; list-style: none;">
+           <li style="margin-bottom: 18px; color: #cbd5e1; font-size: 1.05rem; line-height: 1.5;">
+             <span><strong class="highlight" style="color: #fff; font-weight: 600;">4 Premium 1-Hour Live Sessions</strong> (individual pace in a group of 4 – based on my <a href="#methodology"><u>Three-Pillar System</u></a>)</span>
+           </li>
+           <li style="margin-bottom: 18px; color: #cbd5e1; font-size: 1.05rem; line-height: 1.5;">
+             <span><strong class="highlight">Personalized Study Roadmap</strong> (tailored to your specific goals)</span>
+           </li>
+           <li style="margin-bottom: 18px; color: #cbd5e1; font-size: 1.05rem; line-height: 1.5;">
+             <span>Unlimited Access to the <strong class="highlight">Custom Kanji & Vocab App</strong></span>
+           </li>
+         </ul>
+       </div>
+       
+       <!-- Partea de jos: Butonul principal pus ca o concluzie curată -->
+       <div style="padding: 35px 45px 45px 45px; text-align: center;">
+         <a href="#connect" class="btn-primary" style="text-align: center; display: block; padding: 18px; text-decoration: none; font-weight: 700; font-size: 1.1rem; border-radius: 12px; transition: transform 0.2s, box-shadow: 0 8px 24px rgba(255, 74, 90, 0.35);">Join the Mentorship</a>
+       </div>
+     </div>
+
+   <!-- SCRIPT PENTRU DETECTARE LOCAȚIE ȘI SCHIMBARE PREȚURI -->
+   <script>
+     document.addEventListener("DOMContentLoaded", function() {
+       const basePriceEl = document.getElementById("base-price");
+       const promoPriceEl = document.getElementById("promo-price");
+
+       const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+       
+       if (timezone.includes("Bucharest")) {
+         updatePrices("440 RON", "240 RON");
+       } else {
+         fetch('https://ipapi.co/json/')
+           .then(response => response.json())
+           .then(data => {
+             if (data.country === "RO") {
+               updatePrices("440 RON", "240 RON");
+             } else if (data.in_eu || ["AT","BE","CY","EE","FI","FR","DE","GR","IE","IT","LV","LT","LU","MT","NL","PT","SK","SI","ES"].includes(data.country)) {
+               updatePrices("129 €", "79 €");
+             } else {
+               updatePrices("$129", "$79");
+             }
+           })
+           .catch(error => {
+             console.log("Location detection fallback applied.");
+           });
+       }
+
+       function updatePrices(base, promo) {
+         basePriceEl.textContent = base;
+         promoPriceEl.textContent = promo;
+       }
+     });
+   </script>
+
+  <!-- FAQ ACCORDION -->
+  <section class="section-padding">
+    <div class="container-narrow">
+      <div class="header-center">
+        <span class="badge">FAQ</span>
+        <h2 class="main-title">Frequently Asked Questions</h2>
+        <p class="subtitle">Got questions? Let's clear up exactly how things work.</p>
+      </div>
+      <div class="faq-wrapper">
+        <!-- FIRST QUESTION: KEPT AS IS -->
+        <div class="faq-item">
+          <button class="faq-trigger">
+            <span>Is this program suitable for absolute beginners?</span>
+            <div class="faq-icon-cross"></div>
+          </button>
+          <div class="faq-content">
+            <p>Yes, absolutely. In fact, starting as a beginner here is an advantage because you won't have to break old habits and relearn the right way. I will guide you cleanly from zero straight into the structured system I've spent years to build.</p>
+          </div>
+        </div>
+        
+        <!-- NEW PAYMENT QUESTION -->
+        <div class="faq-item">
+          <button class="faq-trigger">
+            <span>How is the payment managed?</span>
+            <div class="faq-icon-cross"></div>
+          </button>
+          <div class="faq-content">
+            <p>Payment is made once every 4 weeks, in advance, <strong>only after</strong> signing the contract and issuing the first invoice. It is securely completed via bank transfer (or Stripe, if available).</p>
+          </div>
+        </div>
+        
+        <!-- NEW ATTENDANCE QUESTION -->
+        <div class="faq-item">
+          <button class="faq-trigger">
+            <span>What happens if I can’t attend a scheduled session?</span>
+            <div class="faq-icon-cross"></div>
+          </button>
+          <div class="faq-content">
+            <p>Because the dynamic and individual pace of the ultra-small groups is important, reliability is key. If you ever have an emergency, the session can be rescheduled if all group members unanimously agree. Alternatively, we will try our best to accommodate you in another active group for that week. If all other slots are fully booked, you won't fall behind—we will immediately provide you with the complete learning materials and tasks which would've been covered during that class.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+<!-- CONNECT CONTACT -->
+  <section id="connect" class="section-padding">
+    <div class="container">
+      <div class="header-center">
+        <span class="badge">GET IN TOUCH</span>
+        <h2 class="main-title">Connect With Me Directly</h2>
+        <p class="subtitle">Ready to start your journey? Drop me a message on your preferred platform or contact me through email or phone.</p>
+      </div>
+      
+      <!-- Am adăugat stiluri de centrare direct pe grid/părinte -->
+      <div class="contact-grid" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem;">
+         
+         <!-- DISCORD CARD -->
+         <div class="contact-card" style="--accent-glow: #5865F2; flex: 1; max-width: 400px; min-width: 280px;">
+            <div class="card-glow"></div>
+            <div class="contact-icon-wrapper">
+               <svg class="contact-svg" viewBox="0 0 127.14 96.36" fill="currentColor">
+                  <path d="M107.7,8.07A105.15,105.15,0,0,0,77.26,0a77.19,77.19,0,0,0-3.3,6.83A96.67,96.67,0,0,0,53.22,6.83,77.19,77.19,0,0,0,49.88,0,105.15,105.15,0,0,0,19.44,8.07C3.66,31.58-1.86,54.65,1,77.53A105.73,105.73,0,0,0,32,96.36a74.37,74.37,0,0,0,6.72-10.93,68.6,68.6,0,0,1-10.64-5.12c.91-.66,1.8-1.34,2.65-2a75.58,75.58,0,0,0,72.86,0c.85.69,1.74,1.37,2.65,2a68.42,68.42,0,0,1-10.64,5.12,74.74,74.74,0,0,0,6.72,10.93,105.73,105.73,0,0,0,31-18.83C129.1,49.7,122.64,26.9,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53S36.18,40.36,42.45,40.36,53.83,46,53.83,53,48.72,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.24,60,73.24,53S78.41,40.36,84.69,40.36,96.07,46,96.07,53,91,65.69,84.69,65.69Z"/>
+               </svg>
+            </div>
+            <h3>Discord</h3>
+            <p class="handle">vici5287</p>
+            <p class="description">Got questions or want to enroll? Drop me a message or a friend request and I will answer as soon as possible.</p>
+            <a href="#" class="action-text">Connect on Discord →</a>
+         </div>
+
+         <!-- WHATSAPP CARD -->
+         <div class="contact-card" style="--accent-glow: #25D366; flex: 1; max-width: 400px; min-width: 280px;">
+            <div class="card-glow"></div>
+            <div class="contact-icon-wrapper">
+               <svg class="contact-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+               </svg>
+            </div>
+            <h3>WhatsApp</h3>
+            <p class="handle">+40 745 984 726</p>
+            <p class="description">Have personal questions about the mentorship structure or enrollment availability? Let's chat directly.</p>
+            <a href="#" class="action-text">Message Directly →</a>
+         </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="minimal-footer">
+    <p>&copy; 2026 The Japanese Fluency Academy. All Rights Reserved.</p>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+    </div>
+  </footer>
+
+  <!-- ACTIONS LOGIC CONTROLLER -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // 1. MOBILE RESPONSIVE HAMBURGER CONTROLLER
+      const mobileToggle = document.getElementById('mobileToggle');
+      const navLinks = document.getElementById('navLinks');
+
+      if (mobileToggle && navLinks) {
+        mobileToggle.addEventListener('click', () => {
+          navLinks.classList.toggle('active');
+        });
+        
+        document.querySelectorAll('.nav-link, .nav-cta').forEach(link => {
+          link.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+          });
+        });
+      }
+
+      // 2. FAQ ACCORDION SYSTEM
+      const faqItems = document.querySelectorAll('.faq-item');
+      faqItems.forEach(item => {
+        const trigger = item.querySelector('.faq-trigger');
+        if (trigger) {
+          trigger.addEventListener('click', () => {
+            const isActive = item.classList.contains('active');
+            faqItems.forEach(i => i.classList.remove('active'));
+            if (!isActive) {
+              item.classList.add('active');
+            }
+          });
+        }
+      });
+
+      // 3. FLOATING CTA SCROLL-REVEAL TRIGGER
+      const floatingCta = document.getElementById('floatingCta');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 450) {
+          floatingCta.classList.add('reveal');
+        } else {
+          floatingCta.classList.remove('reveal');
+        }
+      });
+
+      // 4. PRECISE SCROLL GLOW CONTROLLER
+      const elementsToGlow = document.querySelectorAll('.method-card, .roadmap-card');
+      
+      function checkCenterGlow() {
+        const screenCenter = window.innerHeight / 2;
+        const detectionTolerance = 150; 
+
+        elementsToGlow.forEach(element => {
+          const rect = element.getBoundingClientRect();
+          const elementCenter = rect.top + (rect.height / 2);
+          const distanceFromCenter = Math.abs(elementCenter - screenCenter);
+
+          if (distanceFromCenter < detectionTolerance) {
+            element.classList.add('active-glow');
+          } else {
+            element.classList.remove('active-glow');
+          }
+        });
+      }
+
+      window.addEventListener('scroll', checkCenterGlow, { passive: true });
+      window.addEventListener('touchmove', checkCenterGlow, { passive: true });
+      window.addEventListener('touchend', checkCenterGlow, { passive: true });
+      window.addEventListener('resize', checkCenterGlow);
+      checkCenterGlow();
+
+      // 5. IP LOCALIZATION CALL
+      localizePricing();
+    });
+
+    async function localizePricing() {
+      const priceNum = document.querySelector('.price-num');
+      const priceSubtext = document.querySelector('.pricing-subtext');
+      if (!priceNum || !priceSubtext) return;
+      
+      try {
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
+        const currency = data.currency;
+
+        if (currency === 'GBP') {
+          priceNum.textContent = '£99';
+          priceSubtext.innerHTML = 'Bring 2 friends and form your own group!';
+        } else if (currency === 'EUR') {
+          priceNum.textContent = '99€';
+          priceSubtext.innerHTML = 'Bring 2 friends and form your own group!';
+        } else if (currency === 'RON') {
+          priceNum.textContent = '399 RON';
+          priceSubtext.innerHTML = 'Aduceți 2 prieteni și formați-vă propria grupă!';
+        } else {
+          priceNum.textContent = '$119';
+          priceSubtext.innerHTML = 'Bring 2 friends and form your own group!';
+        }
+      } catch (error) {
+        priceNum.textContent = '$119';
+        priceSubtext.innerHTML = 'Bring 2 friends and form your own group!';
+      }
+    }
+  </script>
+</body>
+</html>
