@@ -292,11 +292,11 @@
     backdrop-filter: blur(10px);
     transition: transform 0.4s ease, border-color 0.4s ease-in-out;
   }
-  .card-meta {
-    @apply flex items-center justify-between mb-4;
+  .card-title-row {
+    @apply flex items-center flex-wrap gap-3 mb-2.5;
   }
   .card-badge {
-    @apply font-extrabold text-[0.9rem] text-white rounded-lg px-3.5 py-1.5;
+    @apply font-extrabold text-[0.9rem] text-white rounded-lg px-3.5 py-1.5 shrink-0;
     background: rgb(255 255 255 / 0.05);
     border-left: 3px solid var(--accent-glow);
   }
@@ -319,9 +319,15 @@
       height: 22px;
       font-size: 0.8rem;
     }
+    .card-title-row {
+      @apply flex-col items-start gap-2;
+    }
+    .card-badge {
+      order: -1;
+    }
   }
   .roadmap-card h3 {
-    @apply text-white font-bold mb-2.5 text-[1.4rem] tracking-[-0.5px];
+    @apply text-white font-bold text-[1.4rem] tracking-[-0.5px];
   }
   .roadmap-card p {
     @apply text-text-muted text-[1.05rem] leading-[1.6];
