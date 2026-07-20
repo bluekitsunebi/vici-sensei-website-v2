@@ -54,29 +54,28 @@
   </div>
 </section>
 
-<!-- SCRIPT PENTRU DETECTARE LOCAȚIE ȘI SCHIMBARE PREȚURI -->
+<!-- SCRIPT PENTRU DETECTARE LOCAȚIE ȘI SCHIMBARE PREȚ -->
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const basePriceEl = document.getElementById('base-price');
-    const promoPriceEl = document.getElementById('promo-price');
 
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     if (timezone.includes('Bucharest')) {
-      updatePrices('440 RON', '240 RON');
+      updatePrice('440 RON');
     } else {
       fetch('https://ipapi.co/json/')
         .then((response) => response.json())
         .then((data) => {
           if (data.country === 'RO') {
-            updatePrices('440 RON', '240 RON');
+            updatePrice('440 RON');
           } else if (
             data.in_eu ||
             ['AT', 'BE', 'CY', 'EE', 'FI', 'FR', 'DE', 'GR', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PT', 'SK', 'SI', 'ES'].includes(data.country)
           ) {
-            updatePrices('129 €', '79 €');
+            updatePrice('129 €');
           } else {
-            updatePrices('$129', '$79');
+            updatePrice('$129');
           }
         })
         .catch((error) => {
@@ -84,42 +83,8 @@
         });
     }
 
-    function updatePrices(base: string, promo: string) {
+    function updatePrice(base: string) {
       basePriceEl!.textContent = base;
-      promoPriceEl!.textContent = promo;
     }
   });
-
-  document.addEventListener('DOMContentLoaded', () => {
-    localizePricing();
-  });
-
-  async function localizePricing() {
-    const priceNum = document.querySelector('.price-num');
-    const priceSubtext = document.querySelector('.pricing-subtext');
-    if (!priceNum || !priceSubtext) return;
-
-    try {
-      const response = await fetch('https://ipapi.co/json/');
-      const data = await response.json();
-      const currency = data.currency;
-
-      if (currency === 'GBP') {
-        priceNum.textContent = '£99';
-        priceSubtext.innerHTML = 'Bring 2 friends and form your own group!';
-      } else if (currency === 'EUR') {
-        priceNum.textContent = '99€';
-        priceSubtext.innerHTML = 'Bring 2 friends and form your own group!';
-      } else if (currency === 'RON') {
-        priceNum.textContent = '399 RON';
-        priceSubtext.innerHTML = 'Aduceți 2 prieteni și formați-vă propria grupă!';
-      } else {
-        priceNum.textContent = '$119';
-        priceSubtext.innerHTML = 'Bring 2 friends and form your own group!';
-      }
-    } catch (error) {
-      priceNum.textContent = '$119';
-      priceSubtext.innerHTML = 'Bring 2 friends and form your own group!';
-    }
-  }
 </script>
