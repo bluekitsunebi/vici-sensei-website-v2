@@ -229,7 +229,7 @@
       max-height: 0;
     }
     .nav-links.active {
-      max-height: 300px;
+      max-height: 317px;
     }
     .nav-link,
     .nav-cta {
@@ -543,7 +543,6 @@
     @apply text-white m-0;
   }
 
-  /*     padding: 14px 22px;*/
   /* FLOATING CTA */
   .floating-cta-bar {
     @apply fixed left-1/2 flex items-center justify-between rounded-full px-6 py-3 max-md:px-0 max-md:py-0;
@@ -560,11 +559,6 @@
     /* Overrides the unconditional max-width/justify-content above on mobile. */
     @apply max-md:max-w-fit max-md:justify-center max-md:bg-accent-red;
   }
-  /* @media (max-width: 767px) {
-    .floating-cta-bar {
-      padding: 10px;
-    }
-  } */
   .floating-cta-bar.reveal {
     bottom: 24px;
   }
