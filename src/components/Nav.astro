@@ -1,0 +1,42 @@
+---
+---
+
+<nav class="site-nav">
+  <div class="nav-container">
+    <a href="/" class="nav-logo">
+      <span class="logo-icon">🇯🇵</span> Vici Sensei
+    </a>
+
+    <div class="nav-links" id="navLinks">
+      <a href="/#methodology" class="nav-link">Method</a>
+      <a href="/#roadmap" class="nav-link">Story</a>
+      <a href="/#pricing" class="nav-link">Pricing</a>
+      <a href="/#connect" class="nav-cta">Apply For A Seat</a>
+    </div>
+
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<script>
+  const mobileToggle = document.getElementById('mobileToggle');
+  const navLinks = document.getElementById('navLinks');
+
+  if (mobileToggle && navLinks) {
+    mobileToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+
+    document.querySelectorAll('.nav-link, .nav-cta').forEach((link) => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+      });
+    });
+  }
+</script>

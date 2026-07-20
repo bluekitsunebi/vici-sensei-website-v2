@@ -1,0 +1,33 @@
+---
+import FaqItem from './FaqItem.astro';
+import { faqItems } from '../data/faq';
+---
+
+<section class="section-padding">
+  <div class="container-narrow">
+    <div class="header-center">
+      <span class="badge">FAQ</span>
+      <h2 class="main-title">Frequently Asked Questions</h2>
+      <p class="subtitle">Got questions? Let's clear up exactly how things work.</p>
+    </div>
+    <div class="faq-wrapper">
+      {faqItems.map((item) => <FaqItem {...item} />)}
+    </div>
+  </div>
+</section>
+
+<script>
+  const faqItems = document.querySelectorAll('.faq-item');
+  faqItems.forEach((item) => {
+    const trigger = item.querySelector('.faq-trigger');
+    if (trigger) {
+      trigger.addEventListener('click', () => {
+        const isActive = item.classList.contains('active');
+        faqItems.forEach((i) => i.classList.remove('active'));
+        if (!isActive) {
+          item.classList.add('active');
+        }
+      });
+    }
+  });
+</script>

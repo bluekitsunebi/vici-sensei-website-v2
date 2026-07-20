@@ -1,0 +1,23 @@
+---
+export interface Props {
+  accent: string;
+  name: string;
+  handle: string;
+  description: string;
+  actionText: string;
+  href: string;
+}
+
+const { accent, name, handle, description, actionText, href } = Astro.props;
+---
+
+<div class="contact-card" style={`--accent-glow: ${accent}; flex: 1; max-width: 400px; min-width: 280px;`}>
+  <div class="card-glow"></div>
+  <div class="contact-icon-wrapper">
+    <slot name="icon" />
+  </div>
+  <h3>{name}</h3>
+  <p class="handle">{handle}</p>
+  <p class="description">{description}</p>
+  <a href={href} class="action-text">{actionText}</a>
+</div>

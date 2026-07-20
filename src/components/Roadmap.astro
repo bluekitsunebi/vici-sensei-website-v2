@@ -1,0 +1,19 @@
+---
+import RoadmapCard from './RoadmapCard.astro';
+import { roadmapItems } from '../data/roadmap';
+---
+
+<section id="roadmap" class="section-padding" style="background-color: #090d16;">
+  <div class="container-narrow">
+    <div class="header-center">
+      <span class="badge">THE ORIGIN STORY</span>
+      <h2 class="main-title">My 16-Year Journey</h2>
+      <p class="subtitle">The story of a passionate anime fan who bypassed traditional limitations to attain true fluency in Japanese.</p>
+    </div>
+
+    <div class="glow-timeline">
+      <div class="timeline-line"></div>
+      {roadmapItems.map((item) => <RoadmapCard {...item} />)}
+    </div>
+  </div>
+</section>

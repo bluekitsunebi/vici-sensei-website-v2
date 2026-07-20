@@ -1,0 +1,29 @@
+---
+---
+
+<script>
+  const elementsToGlow = document.querySelectorAll('.method-card, .roadmap-card');
+
+  function checkCenterGlow() {
+    const screenCenter = window.innerHeight / 2;
+    const detectionTolerance = 150;
+
+    elementsToGlow.forEach((element) => {
+      const rect = element.getBoundingClientRect();
+      const elementCenter = rect.top + rect.height / 2;
+      const distanceFromCenter = Math.abs(elementCenter - screenCenter);
+
+      if (distanceFromCenter < detectionTolerance) {
+        element.classList.add('active-glow');
+      } else {
+        element.classList.remove('active-glow');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', checkCenterGlow, { passive: true });
+  window.addEventListener('touchmove', checkCenterGlow, { passive: true });
+  window.addEventListener('touchend', checkCenterGlow, { passive: true });
+  window.addEventListener('resize', checkCenterGlow);
+  checkCenterGlow();
+</script>

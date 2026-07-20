@@ -1,0 +1,18 @@
+---
+export interface Props {
+  question: string;
+  answer: string;
+}
+
+const { question, answer } = Astro.props;
+---
+
+<div class="faq-item">
+  <button class="faq-trigger">
+    <span>{question}</span>
+    <div class="faq-icon-cross"></div>
+  </button>
+  <div class="faq-content">
+    <p set:html={answer} />
+  </div>
+</div>

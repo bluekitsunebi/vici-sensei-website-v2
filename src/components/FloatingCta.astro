@@ -1,0 +1,18 @@
+---
+---
+
+<div class="floating-cta-bar" id="floatingCta">
+  <span class="floating-text">Done with surface-level study?</span>
+  <a href="#pricing" class="floating-btn">Apply For A Seat</a>
+</div>
+
+<script>
+  const floatingCta = document.getElementById('floatingCta');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 450) {
+      floatingCta?.classList.add('reveal');
+    } else {
+      floatingCta?.classList.remove('reveal');
+    }
+  });
+</script>

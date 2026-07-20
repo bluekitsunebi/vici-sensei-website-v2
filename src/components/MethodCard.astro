@@ -1,0 +1,17 @@
+---
+export interface Props {
+  num: string;
+  accent: string;
+  title: string;
+  description: string;
+}
+
+const { num, accent, title, description } = Astro.props;
+---
+
+<div class="method-card" style={`--accent-blue: ${accent};`}>
+  <div class="card-glow"></div>
+  <span class="method-num">{num}</span>
+  <h3>{title}</h3>
+  <p set:html={description} />
+</div>

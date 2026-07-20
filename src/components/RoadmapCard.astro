@@ -1,0 +1,25 @@
+---
+export interface Props {
+  badge: string;
+  icon: string;
+  accent: string;
+  title: string;
+  description: string;
+  current?: boolean;
+  destination?: boolean;
+}
+
+const { badge, icon, accent, title, description, current = false, destination = false } = Astro.props;
+---
+
+<div class:list={['roadmap-card', { 'destination-card': destination }]} style={`--accent-glow: ${accent};`}>
+  <div class="card-glow"></div>
+  <div class="card-meta">
+    <div class:list={['card-badge', { current }]}>{badge}</div>
+    <div class="card-icon">{icon}</div>
+  </div>
+  <div class="card-body">
+    <h3>{title}</h3>
+    <p set:html={description} />
+  </div>
+</div>

@@ -1,0 +1,17 @@
+---
+import MethodCard from './MethodCard.astro';
+import { methodologyItems } from '../data/methodology';
+---
+
+<section id="methodology" class="section-padding">
+  <div class="container">
+    <div class="header-center">
+      <span class="badge">WHY WE ARE DIFFERENT</span>
+      <h2 class="main-title">The Three-Pillar System</h2>
+      <p class="subtitle">My own structured, three-pillar system designed specifically for analytical minds who need clear rules to master Japanese.</p>
+    </div>
+    <div class="methodology-grid">
+      {methodologyItems.map((item) => <MethodCard {...item} />)}
+    </div>
+  </div>
+</section>
