@@ -16,7 +16,6 @@
   --color-accent-red: #ff4a5a;
   --color-accent-red-glow: rgba(255, 74, 90, 0.35);
   --color-accent-blue: #00d2ff;
-  --color-accent-gold: #ffd200;
   --color-border-soft: rgba(255, 255, 255, 0.05);
 
   /* Original design used desktop-first max-width breakpoints;
@@ -89,9 +88,9 @@
     @apply text-white font-semibold rounded px-1.5 py-0.5;
     background: linear-gradient(120deg, rgb(255 255 255 / 0.1) 0%, rgb(255 255 255 / 0) 100%);
   }
-  .highlight.gold {
+  .highlight.blue {
     @apply font-bold;
-    color: var(--color-accent-gold);
+    color: var(--color-accent-blue);
   }
 
   /* Glow overlay shared by method/roadmap/contact cards.

@@ -15,7 +15,7 @@ export const roadmapItems: RoadmapItem[] = [
     accent: '#e52b2b',
     title: 'The Spark',
     description:
-      'Fell completely in love with anime and watched <span class="highlight">hundreds of series</span> even before beginning my journey.',
+      'Fell completely in love with anime and watched <span class="highlight">hundreds of anime series</span> even before beginning my journey.',
   },
   {
     badge: '2015',
@@ -23,7 +23,7 @@ export const roadmapItems: RoadmapItem[] = [
     accent: '#ff4a5a',
     title: 'Going Self-Taught',
     description:
-      'I tried attending all sorts of Japanese classes at first, but figuring out the pace was <span class="highlight">too slow for my motivated self</span>, I quit each one after a few weeks. I decided to learn on my own, combining internet research with <span class="highlight">daily real-world conversations</span> with native speakers.',
+      'I tried attending all sorts of Japanese classes at first, but figuring out the pace was too slow for my motivated self, I quit each one after a few weeks. I decided to learn on my own, combining internet research with <span class="highlight">daily real-world conversations with native speakers</span>.',
   },
   {
     badge: '2016',
@@ -31,7 +31,7 @@ export const roadmapItems: RoadmapItem[] = [
     accent: '#ff007a',
     title: 'The Japan Breakthrough',
     description:
-      'At the age of 18, I was blessed with a gift that changed everything: my <span class="highlight">first trip to Japan</span>. I swore to myself I would study even harder and go there again.',
+      'At the age of 18, I was blessed with a gift that changed everything: <span class="highlight">my first trip to Japan</span>. I swore to myself I would study even harder and go there again.',
   },
   {
     badge: '2018',
@@ -47,7 +47,7 @@ export const roadmapItems: RoadmapItem[] = [
     accent: '#0059ff',
     title: 'Starting as a Teacher',
     description:
-      'Started teaching Japanese in my <span class="highlight">spare time</span>, passing on the conversational shortcuts I used to break through.',
+      '<span class="highlight">Started teaching Japanese</span> in my spare time, helping others on their journey while continuing my own.',
   },
   {
     badge: '2019',
@@ -71,7 +71,7 @@ export const roadmapItems: RoadmapItem[] = [
     accent: '#00ff55',
     title: 'The Academic Reality Check',
     description:
-      "Graduated from a university's Japanese-English department, which unfortunately <span class=\"highlight\">didn't contribute whatsoever</span> to improving my Japanese. It completely confirmed to me that the traditional academic system is broken.",
+      "<span class=\"highlight\">Finished a Bachelor's degree in Japanese and English linguistics</span>, which unfortunately didn't contribute whatsoever to improving my Japanese. It completely confirmed to me that the traditional academic system is broken.",
   },
   {
     badge: '2023',
@@ -87,7 +87,7 @@ export const roadmapItems: RoadmapItem[] = [
     accent: '#ffd200',
     title: 'Rejecting Academia',
     description:
-      'Being offered a prestigious position to become a university teacher of the Japanese language, <span class="highlight">I gracefully turned it down</span>. I chose to focus entirely on my current students and my path as an independent teacher.',
+      '<span class="highlight">Being offered a prestigious position</span> to become a university teacher of the Japanese language, <span class="highlight">I gracefully turned it down</span>. I chose to focus entirely on my current students and my path as an independent teacher.',
   },
   {
     badge: '2025',
@@ -105,6 +105,6 @@ export const roadmapItems: RoadmapItem[] = [
     current: true,
     destination: true,
     description:
-      'Having been studying Japanese for over <span class="highlight gold">11 years and teaching it for 8</span>, I continue to teach Japanese to students all around the world, bringing them from total beginners to <span class="highlight gold">full-fledged speakers of the language</span>.',
+      'Having been <span class="highlight">studying Japanese for over 11 years</span> and <span class="highlight">teaching it for 8 years</span>, I continue to teach Japanese to students all around the world, bringing them from total beginners to full-fledged speakers of the language.',
   },
 ];
