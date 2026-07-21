@@ -26,7 +26,7 @@
 
       <!-- Prețuri Dinamice -->
       <div class="mt-[15px] mb-2 max-md:text-center leading-tight">
-        <span id="base-price" class="text-[3rem] font-extrabold text-white tracking-[-1px] whitespace-nowrap">$129</span> <span class="text-text-muted text-[1.2rem] whitespace-nowrap">/ 4 weeks</span>
+        <span id="base-price" class="text-[3rem] font-extrabold text-white tracking-[-1px] whitespace-nowrap">$119</span> <span class="text-text-muted text-[1.2rem] whitespace-nowrap">/ 4 weeks</span>
       </div>
     </div>
 
@@ -53,38 +53,3 @@
     </div>
   </div>
 </section>
-
-<!-- SCRIPT PENTRU DETECTARE LOCAȚIE ȘI SCHIMBARE PREȚ -->
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const basePriceEl = document.getElementById('base-price');
-
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-    if (timezone.includes('Bucharest')) {
-      updatePrice('440 RON');
-    } else {
-      fetch('https://ipapi.co/json/')
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.country === 'RO') {
-            updatePrice('440 RON');
-          } else if (
-            data.in_eu ||
-            ['AT', 'BE', 'CY', 'EE', 'FI', 'FR', 'DE', 'GR', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PT', 'SK', 'SI', 'ES'].includes(data.country)
-          ) {
-            updatePrice('129 €');
-          } else {
-            updatePrice('$129');
-          }
-        })
-        .catch((error) => {
-          console.log('Location detection fallback applied.');
-        });
-    }
-
-    function updatePrice(base: string) {
-      basePriceEl!.textContent = base;
-    }
-  });
-</script>
