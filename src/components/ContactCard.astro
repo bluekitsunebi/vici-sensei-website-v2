@@ -7,12 +7,10 @@ export interface Props {
   actionText: string;
   href?: string;
   copyValue?: string;
-  appHref?: string;
-  webHref?: string;
   handleColor?: string;
 }
 
-const { accent, name, handle, description, actionText, href, copyValue, appHref, webHref, handleColor } = Astro.props;
+const { accent, name, handle, description, actionText, href, copyValue, handleColor } = Astro.props;
 ---
 
 <div class="contact-card flex-1 max-w-[400px] min-w-[280px]" style={`--accent-glow: ${accent};`}>
@@ -23,9 +21,7 @@ const { accent, name, handle, description, actionText, href, copyValue, appHref,
   <h3>{name}</h3>
   <p class="handle" style={handleColor ? `color: ${handleColor}; filter: none;` : undefined}>{handle}</p>
   <p class="description">{description}</p>
-  {appHref && webHref ? (
-    <a href={webHref} target="_blank" rel="noopener noreferrer" class="action-text" data-app-href={appHref}>{actionText}</a>
-  ) : copyValue ? (
+  {copyValue ? (
     <button type="button" class="action-text" data-copy={copyValue} data-default-text={actionText}>{actionText}</button>
   ) : (
     <a href={href} target="_blank" rel="noopener noreferrer" class="action-text">{actionText}</a>

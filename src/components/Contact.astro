@@ -18,8 +18,7 @@ import ContactCard from './ContactCard.astro';
         handle="vici5287"
         description="Got questions or want to enroll? Drop me a message or a friend request and I will answer as soon as possible."
         actionText="Connect on Discord →"
-        appHref="discord://-/users/114122034321031175"
-        webHref="https://discord.com/users/114122034321031175"
+        href="https://discord.com/users/114122034321031175"
       >
         <Fragment slot="icon">
           <Icon name="simple-icons:discord" class="contact-svg" />
@@ -32,7 +31,7 @@ import ContactCard from './ContactCard.astro';
         handle="+40 745 984 726"
         description="Have personal questions about the mentorship structure or enrollment availability? Let's chat directly."
         actionText="Message Directly →"
-        href="https://wa.me/40745984726"
+        href="https://web.whatsapp.com/send?phone=40745984726"
       >
         <Fragment slot="icon">
           <Icon name="simple-icons:whatsapp" class="contact-svg" />
@@ -56,32 +55,6 @@ import ContactCard from './ContactCard.astro';
 </section>
 
 <script>
-  // Try to open the native app via its custom URI scheme; if the app doesn't
-  // take over the window within the timeout, fall back to the web link.
-  document.querySelectorAll<HTMLAnchorElement>('[data-app-href]').forEach((link) => {
-    link.addEventListener('click', (event) => {
-      const appUrl = link.dataset.appHref;
-      if (!appUrl) return;
-
-      event.preventDefault();
-
-      let appOpened = false;
-      const onBlur = () => {
-        appOpened = true;
-      };
-      window.addEventListener('blur', onBlur, { once: true });
-
-      window.location.href = appUrl;
-
-      setTimeout(() => {
-        window.removeEventListener('blur', onBlur);
-        if (!appOpened) {
-          window.open(link.href, '_blank', 'noopener,noreferrer');
-        }
-      }, 900);
-    });
-  });
-
   // Support any future contact method that just needs a "copy to clipboard" action.
   document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((button) => {
     button.addEventListener('click', async () => {
