@@ -1,0 +1,40 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<div class="cookie-widget" id="cookieWidget">
+  <div class="cookie-panel" id="cookiePanel">
+    <a href="/cookies" class="cookie-label">We use cookies.</a>
+    <button type="button" class="cookie-btn cookie-btn-accept" id="cookieAccept">Accept</button>
+    <button type="button" class="cookie-btn cookie-btn-decline" id="cookieDecline">Decline</button>
+  </div>
+  <button type="button" class="cookie-trigger" id="cookieToggle" aria-expanded="false" aria-label="Cookie preferences">
+    <Icon name="mdi:cookie" class="cookie-icon" />
+  </button>
+</div>
+
+<script>
+  const STORAGE_KEY = 'cookieWidgetDismissed';
+
+  const widget = document.getElementById('cookieWidget');
+  const toggle = document.getElementById('cookieToggle');
+  const acceptBtn = document.getElementById('cookieAccept');
+  const declineBtn = document.getElementById('cookieDecline');
+
+  if (localStorage.getItem(STORAGE_KEY) === 'true') {
+    widget?.remove();
+  } else {
+    toggle?.addEventListener('click', () => {
+      const expanded = widget?.classList.toggle('expanded') ?? false;
+      toggle.setAttribute('aria-expanded', String(expanded));
+    });
+
+    const dismiss = () => {
+      localStorage.setItem(STORAGE_KEY, 'true');
+      widget?.remove();
+    };
+
+    acceptBtn?.addEventListener('click', dismiss);
+    declineBtn?.addEventListener('click', dismiss);
+  }
+</script>

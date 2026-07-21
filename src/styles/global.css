@@ -518,12 +518,9 @@
     @apply text-white font-semibold;
   }
   .legal-content a {
-    @apply text-accent-blue font-semibold underline;
+    @apply text-white font-semibold underline hover:text-blue-300;
     text-underline-offset: 2px;
     transition: color 0.2s ease;
-  }
-  .legal-content a:hover {
-    color: var(--color-accent-red);
   }
   .legal-company-card {
     @apply bg-bg-cards border border-border-soft rounded-2xl mb-8;
@@ -569,4 +566,70 @@
     @apply text-white font-bold rounded-full px-6 py-2.5 text-[0.85rem] bg-accent-red max-md:bg-transparent shadow-[0_0_15px_var(--color-accent-red-glow)] max-md:shadow-transparent;
   }
   /* background: var(--color-accent-red); */
+
+  /* COOKIE WIDGET */
+  .cookie-widget {
+    @apply fixed left-6 bottom-6;
+    z-index: 999;
+  }
+  .cookie-trigger {
+    @apply relative z-[2] flex items-center justify-center w-11 h-11 rounded-full cursor-pointer;
+    background: rgb(17 24 39 / 0.85);
+    border: 1px solid var(--color-border-soft);
+    backdrop-filter: blur(10px);
+    transition: border-color 0.3s ease;
+  }
+  .cookie-widget:hover .cookie-trigger,
+  .cookie-widget.expanded .cookie-trigger {
+    border-color: rgb(255 74 90 / 0.35);
+  }
+  .cookie-icon {
+    @apply text-accent-red w-[22px] h-[22px];
+  }
+  .cookie-panel {
+    @apply absolute left-0 top-0 flex items-center overflow-hidden whitespace-nowrap rounded-full h-11 gap-3 pl-13;
+    padding-right: 0;
+    background: rgb(11 15 25 / 0.95);
+    border: 1px solid var(--color-border-soft);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 20px 40px rgb(0 0 0 / 0.5), 0 0 20px rgb(255 74 90 / 0.1);
+    max-width: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: max-width 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.2), opacity 0.25s ease, padding-right 0.35s ease;
+  }
+  .cookie-widget:hover .cookie-panel,
+  .cookie-widget.expanded .cookie-panel {
+    max-width: 420px;
+    opacity: 1;
+    padding-right: 16px;
+    pointer-events: auto;
+  }
+  .cookie-label {
+    @apply text-text-muted font-semibold text-[0.9rem] underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s ease;
+  }
+  .cookie-label:hover {
+    @apply text-white;
+  }
+  .cookie-btn {
+    @apply font-bold rounded-full px-3.5 py-1.5 text-[0.8rem] cursor-pointer whitespace-nowrap border-none;
+    font-family: inherit;
+    appearance: none;
+  }
+  .cookie-btn-accept {
+    @apply text-white;
+    background: var(--color-accent-red);
+    box-shadow: 0 0 12px var(--color-accent-red-glow);
+  }
+  .cookie-btn-decline {
+    @apply text-text-muted bg-transparent border;
+    border-color: var(--color-border-soft);
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .cookie-btn-decline:hover {
+    @apply text-white;
+    border-color: rgb(255 255 255 / 0.2);
+  }
 }
