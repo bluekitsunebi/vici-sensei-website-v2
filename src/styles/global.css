@@ -117,8 +117,7 @@
 
   /* HERO */
   .hero-section {
-    @apply relative flex items-center justify-center text-center;
-    padding: 180px 24px 110px 24px;
+    @apply relative flex items-center justify-center text-center p-[180px_24px_110px_24px] max-md:p-[110px_24px_110px_24px];
     background: radial-gradient(circle at 50% 20%, rgb(255 74 90 / 0.08) 0%, transparent 50%);
   }
   .hero-container {
@@ -569,13 +568,13 @@
     @apply text-[0.95rem] font-semibold text-white max-md:hidden;
   }
   .floating-btn {
-    @apply text-white font-bold rounded-full px-6 py-2.5 text-[0.85rem] bg-accent-red max-md:bg-transparent shadow-[0_0_15px_var(--color-accent-red-glow)] max-md:shadow-transparent;
+    @apply text-white font-bold rounded-full px-6 py-2.5 text-[0.85rem] bg-accent-red max-md:bg-transparent shadow-[0_0_15px_var(--color-accent-red-glow)] max-md:shadow-transparent whitespace-nowrap;
   }
   /* background: var(--color-accent-red); */
 
   /* COOKIE WIDGET */
   .cookie-widget {
-    @apply fixed left-6 bottom-26 max-md:bottom-20;
+    @apply fixed left-6 bottom-5;
     z-index: 999;
   }
   .cookie-trigger {
@@ -584,6 +583,9 @@
     border: 1px solid var(--color-border-soft);
     backdrop-filter: blur(10px);
     transition: border-color 0.3s ease;
+  }
+  .cookie-widget.expanded {
+    @apply bottom-26 max-md:bottom-20;
   }
   .cookie-widget.expanded .cookie-trigger {
     border-color: rgb(255 74 90 / 0.35);
