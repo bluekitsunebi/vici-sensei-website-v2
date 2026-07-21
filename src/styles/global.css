@@ -476,13 +476,13 @@
     @apply text-text-muted;
   }
   .footer-anpc-badge {
-    @apply flex justify-center mt-6 opacity-60 transition-opacity duration-200;
-  }
-  .footer-anpc-badge:hover {
-    @apply opacity-100;
+    @apply flex justify-center mt-6;
   }
   .footer-anpc-badge img {
-    @apply h-[38px] w-auto rounded;
+    @apply h-[38px] w-auto rounded opacity-60 transition-opacity duration-200;
+  }
+  .footer-anpc-badge img:hover {
+    @apply opacity-100;
   }
 
   /* LEGAL PAGES */
@@ -569,7 +569,7 @@
 
   /* COOKIE WIDGET */
   .cookie-widget {
-    @apply fixed left-6 bottom-6;
+    @apply fixed left-6 bottom-26 max-md:bottom-20;
     z-index: 999;
   }
   .cookie-trigger {
@@ -579,7 +579,6 @@
     backdrop-filter: blur(10px);
     transition: border-color 0.3s ease;
   }
-  .cookie-widget:hover .cookie-trigger,
   .cookie-widget.expanded .cookie-trigger {
     border-color: rgb(255 74 90 / 0.35);
   }
@@ -598,7 +597,6 @@
     pointer-events: none;
     transition: max-width 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.2), opacity 0.25s ease, padding-right 0.35s ease;
   }
-  .cookie-widget:hover .cookie-panel,
   .cookie-widget.expanded .cookie-panel {
     max-width: 420px;
     opacity: 1;

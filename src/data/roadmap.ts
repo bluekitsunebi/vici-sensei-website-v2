@@ -71,7 +71,7 @@ export const roadmapItems: RoadmapItem[] = [
     accent: '#00ff55',
     title: 'The Academic Reality Check',
     description:
-      "<span class=\"highlight\">Finished a Bachelor's degree in Japanese and English linguistics</span>, which unfortunately didn't contribute whatsoever to improving my Japanese. It completely confirmed to me that the traditional academic system is broken.",
+      "<span class=\"highlight\">Finished a Bachelor's degree in Japanese and English linguistics</span>, which unfortunately didn't contribute whatsoever to improving my Japanese. It completely confirmed to me that the traditional academic system is not by any means the ideal choice.",
   },
   {
     badge: '2023',

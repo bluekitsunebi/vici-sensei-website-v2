@@ -24,10 +24,27 @@ import { Icon } from 'astro-icon/components';
   if (localStorage.getItem(STORAGE_KEY) === 'true') {
     widget?.remove();
   } else {
+    const collapse = () => {
+      widget?.classList.remove('expanded');
+      toggle?.setAttribute('aria-expanded', 'false');
+    };
+
     toggle?.addEventListener('click', () => {
       const expanded = widget?.classList.toggle('expanded') ?? false;
       toggle.setAttribute('aria-expanded', String(expanded));
     });
+
+    document.addEventListener('click', (event) => {
+      if (widget?.classList.contains('expanded') && !widget.contains(event.target as Node)) {
+        collapse();
+      }
+    });
+
+    window.addEventListener('scroll', () => {
+      if (widget?.classList.contains('expanded')) {
+        collapse();
+      }
+    }, { passive: true });
 
     const dismiss = () => {
       localStorage.setItem(STORAGE_KEY, 'true');
