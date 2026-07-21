@@ -1,4 +1,6 @@
 ---
+import { Icon } from 'astro-icon/components';
+
 export interface Props {
   badge: string;
   icon: string;
@@ -14,7 +16,7 @@ const { badge, icon, accent, title, description, current = false, destination = 
 
 <div class:list={['roadmap-card', { 'destination-card': destination }]} style={`--accent-glow: ${accent};`}>
   <div class="card-glow"></div>
-  <div class="card-icon">{icon}</div>
+  <div class="card-icon"><Icon name={icon} /></div>
   <div class="card-body">
     <div class="card-title-row">
       <h3>{title}</h3>

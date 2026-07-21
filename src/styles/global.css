@@ -305,18 +305,24 @@
     box-shadow: 0 0 15px rgb(255 34 0 / 0.5);
   }
   .card-icon {
-    @apply absolute w-[26px] h-[26px] rounded-full flex items-center justify-center text-[0.95rem] z-[2];
+    @apply absolute w-[26px] h-[26px] rounded-full flex items-center justify-center z-[2];
     left: -44px;
     background: var(--color-bg-main);
     border: 2px solid var(--accent-glow);
     box-shadow: 0 0 10px var(--accent-glow);
+  }
+  .card-icon svg {
+    @apply w-[14px] h-[14px];
+    color: var(--accent-glow);
   }
   @media (max-width: 768px) {
     .card-icon {
       left: -36px;
       width: 22px;
       height: 22px;
-      font-size: 0.8rem;
+    }
+    .card-icon svg {
+      @apply w-[12px] h-[12px];
     }
     .card-title-row {
       @apply flex-col items-start gap-2;

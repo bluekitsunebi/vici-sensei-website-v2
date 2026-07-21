@@ -11,7 +11,7 @@ export interface RoadmapItem {
 export const roadmapItems: RoadmapItem[] = [
   {
     badge: '2010 - 2015',
-    icon: '🌸',
+    icon: 'mdi:flower',
     accent: '#e52b2b',
     title: 'The Spark',
     description:
@@ -19,7 +19,7 @@ export const roadmapItems: RoadmapItem[] = [
   },
   {
     badge: '2015',
-    icon: '💡',
+    icon: 'mdi:lightbulb-on-outline',
     accent: '#ff4a5a',
     title: 'Going Self-Taught',
     description:
@@ -27,7 +27,7 @@ export const roadmapItems: RoadmapItem[] = [
   },
   {
     badge: '2016',
-    icon: '✈️',
+    icon: 'mdi:airplane',
     accent: '#ff007a',
     title: 'The Japan Breakthrough',
     description:
@@ -35,7 +35,7 @@ export const roadmapItems: RoadmapItem[] = [
   },
   {
     badge: '2018',
-    icon: '💼',
+    icon: 'mdi:briefcase-outline',
     accent: '#9d00ff',
     title: 'The Tourist Guide',
     description:
@@ -43,7 +43,7 @@ export const roadmapItems: RoadmapItem[] = [
   },
   {
     badge: '2018',
-    icon: '🎤',
+    icon: 'mdi:human-male-board',
     accent: '#0059ff',
     title: 'Starting as a Teacher',
     description:
@@ -51,7 +51,7 @@ export const roadmapItems: RoadmapItem[] = [
   },
   {
     badge: '2019',
-    icon: '📺',
+    icon: 'mdi:television-classic',
     accent: '#00bfff',
     title: 'The "Tokyo TV" Moment',
     description:
@@ -59,7 +59,7 @@ export const roadmapItems: RoadmapItem[] = [
   },
   {
     badge: '2020',
-    icon: '💻',
+    icon: 'mdi:laptop',
     accent: '#00e5bc',
     title: 'The IT Stage',
     description:
@@ -67,7 +67,7 @@ export const roadmapItems: RoadmapItem[] = [
   },
   {
     badge: '2021',
-    icon: '🎓',
+    icon: 'mdi:school-outline',
     accent: '#00ff55',
     title: 'The Academic Reality Check',
     description:
@@ -75,7 +75,7 @@ export const roadmapItems: RoadmapItem[] = [
   },
   {
     badge: '2023',
-    icon: '🌍',
+    icon: 'mdi:earth',
     accent: '#e6b800',
     title: 'Going Full-Time',
     description:
@@ -83,7 +83,7 @@ export const roadmapItems: RoadmapItem[] = [
   },
   {
     badge: '2025',
-    icon: '🚫',
+    icon: 'mdi:cancel',
     accent: '#ffd200',
     title: 'Rejecting Academia',
     description:
@@ -91,7 +91,7 @@ export const roadmapItems: RoadmapItem[] = [
   },
   {
     badge: '2025',
-    icon: '🏯',
+    icon: 'mdi:temple-buddhist',
     accent: '#ff6a00',
     title: 'Living the Dream',
     description:
@@ -99,7 +99,7 @@ export const roadmapItems: RoadmapItem[] = [
   },
   {
     badge: 'NOW',
-    icon: '🔥',
+    icon: 'mdi:fire',
     accent: '#ff2200',
     title: 'Continuing the Mission',
     current: true,
