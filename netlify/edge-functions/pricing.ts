@@ -1,4 +1,5 @@
 import type { Context } from '@netlify/edge-functions';
+import { HTMLRewriter } from 'https://ghuc.cc/worker-tools/html-rewriter/index.ts';
 
 const EUROZONE_COUNTRIES = new Set([
   'AT', 'BE', 'HR', 'CY', 'EE', 'FI', 'FR', 'DE', 'GR',
