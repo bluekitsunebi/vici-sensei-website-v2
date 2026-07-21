@@ -574,7 +574,7 @@
 
   /* COOKIE WIDGET */
   .cookie-widget {
-    @apply fixed left-6 bottom-5;
+    @apply fixed left-6 bottom-6;
     z-index: 999;
   }
   .cookie-trigger {
@@ -585,7 +585,7 @@
     transition: border-color 0.3s ease;
   }
   .cookie-widget.expanded {
-    @apply bottom-26 max-md:bottom-20;
+    @apply bottom-6 max-xl:bottom-26 max-md:bottom-20;
   }
   .cookie-widget.expanded .cookie-trigger {
     border-color: rgb(255 74 90 / 0.35);
