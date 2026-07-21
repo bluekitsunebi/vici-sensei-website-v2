@@ -8,9 +8,12 @@ export interface Props {
   href?: string;
   copyValue?: string;
   handleColor?: string;
+  mobileHref?: string;
+  androidHref?: string;
+  iosAppHref?: string;
 }
 
-const { accent, name, handle, description, actionText, href, copyValue, handleColor } = Astro.props;
+const { accent, name, handle, description, actionText, href, copyValue, handleColor, mobileHref, androidHref, iosAppHref } = Astro.props;
 ---
 
 <div class="contact-card flex-1 max-w-[400px] min-w-[280px]" style={`--accent-glow: ${accent};`}>
@@ -24,6 +27,14 @@ const { accent, name, handle, description, actionText, href, copyValue, handleCo
   {copyValue ? (
     <button type="button" class="action-text" data-copy={copyValue} data-default-text={actionText}>{actionText}</button>
   ) : (
-    <a href={href} target="_blank" rel="noopener noreferrer" class="action-text">{actionText}</a>
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="action-text"
+      data-mobile-href={mobileHref}
+      data-android-href={androidHref}
+      data-ios-app-href={iosAppHref}
+    >{actionText}</a>
   )}
 </div>

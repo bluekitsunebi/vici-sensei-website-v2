@@ -32,6 +32,7 @@ import ContactCard from './ContactCard.astro';
         description="Have personal questions about the mentorship structure or enrollment availability? Let's chat directly."
         actionText="Message Directly →"
         href="https://web.whatsapp.com/send?phone=40745984726"
+        mobileHref="https://wa.me/40745984726"
       >
         <Fragment slot="icon">
           <Icon name="simple-icons:whatsapp" class="contact-svg" />
@@ -45,6 +46,8 @@ import ContactCard from './ContactCard.astro';
         description="Prefer email? Send me a detailed message and I'll follow up with everything you need to know."
         actionText="Send an Email →"
         href="https://mail.google.com/mail/?view=cm&fs=1&to=vici.sensei@gmail.com&su=Japanese+Mentorship+Program+Inquiry"
+        androidHref="intent://vici.sensei@gmail.com?subject=Japanese%20Mentorship%20Program%20Inquiry#Intent;scheme=mailto;package=com.google.android.gm;S.browser_fallback_url=https%3A%2F%2Fmail.google.com%2Fmail%2F%3Fview%3Dcm%26fs%3D1%26to%3Dvici.sensei%2540gmail.com%26su%3DJapanese%2BMentorship%2BProgram%2BInquiry;end"
+        iosAppHref="googlegmail:///co?to=vici.sensei@gmail.com&subject=Japanese%20Mentorship%20Program%20Inquiry"
       >
         <Fragment slot="icon">
           <Icon name="simple-icons:gmail" class="contact-svg" />
@@ -55,6 +58,59 @@ import ContactCard from './ContactCard.astro';
 </section>
 
 <script>
+  // Detect mobile OS by user agent, not viewport width — a resized desktop
+  // window should still link to the desktop web apps.
+  const ua = navigator.userAgent;
+  const isIOS = /iPhone|iPad|iPod/i.test(ua);
+  const isAndroid = /Android/i.test(ua);
+
+  // Links with a same-scheme mobile alternative (e.g. wa.me) can just swap
+  // their href outright — no app-detection trickery needed.
+  if (isIOS || isAndroid) {
+    document.querySelectorAll<HTMLAnchorElement>('[data-mobile-href]').forEach((link) => {
+      const mobileHref = link.dataset.mobileHref;
+      if (mobileHref) link.href = mobileHref;
+    });
+  }
+
+  // Android intent:// URLs carry their own native fallback, so this is
+  // likewise a plain href swap.
+  if (isAndroid) {
+    document.querySelectorAll<HTMLAnchorElement>('[data-android-href]').forEach((link) => {
+      const androidHref = link.dataset.androidHref;
+      if (androidHref) link.href = androidHref;
+    });
+  }
+
+  // iOS custom URL schemes have no native fallback (Apple blocks the usual
+  // JS redirect trick from running reliably), so fall back manually: try the
+  // app, and if the tab never loses focus, open the original web link.
+  if (isIOS) {
+    document.querySelectorAll<HTMLAnchorElement>('[data-ios-app-href]').forEach((link) => {
+      const appHref = link.dataset.iosAppHref;
+      if (!appHref) return;
+
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        let appOpened = false;
+        const onBlur = () => {
+          appOpened = true;
+        };
+        window.addEventListener('blur', onBlur, { once: true });
+
+        window.location.href = appHref;
+
+        setTimeout(() => {
+          window.removeEventListener('blur', onBlur);
+          if (!appOpened) {
+            window.open(link.href, '_blank', 'noopener,noreferrer');
+          }
+        }, 900);
+      });
+    });
+  }
+
   // Support any future contact method that just needs a "copy to clipboard" action.
   document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((button) => {
     button.addEventListener('click', async () => {
