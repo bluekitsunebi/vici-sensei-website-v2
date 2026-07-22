@@ -187,10 +187,41 @@ const longCards = cards.filter((c) => c.isLong);
   nextBtn.addEventListener('click', () => slideNext(true))
   prevBtn.addEventListener('click', () => slidePrev(true))
 
+  // ── Drag preview helpers ──────────────────────────────────
+  // The "previous" card normally sits at the far end of the DOM (see
+  // slidePrev), not next to the visible card, so a live drag has nothing to
+  // reveal when dragging toward it. prepDragForPrev moves it to the front
+  // up front — like slidePrev's own setup — and offsets the track so nothing
+  // jumps, so it's already in place to slide into view as the drag happens.
+  let dragPrepped = false
+
+  function prepDragForPrev() {
+    if (dragPrepped) return
+    const allCards = track.querySelectorAll('.testimonial-card')
+    const last = allCards[allCards.length - 1]
+    const w = cardWidth()
+    track.style.transition = 'none'
+    track.insertBefore(last, track.firstChild)
+    track.style.transform = `translateX(-${w}px)`
+    dragPrepped = true
+  }
+
+  // Undo prepDragForPrev when the drag doesn't end up going to "previous",
+  // preserving the given on-screen x position so nothing jumps.
+  function unprepDrag(visualX) {
+    if (!dragPrepped) return
+    track.style.transition = 'none'
+    track.appendChild(track.firstChild)
+    track.style.transform = `translateX(${visualX}px)`
+    track.offsetHeight
+    dragPrepped = false
+  }
+
   // ── Touch / Swipe (mobile only) ───────────────────────────
   let touchStartX = 0
   let touchStartY = 0
   let touchDeltaX = 0
+  let touchClampedDx = 0
   let isDragging = false
 
   track.addEventListener(
@@ -200,6 +231,7 @@ const longCards = cards.filter((c) => c.isLong);
       touchStartX = e.touches[0].clientX
       touchStartY = e.touches[0].clientY
       touchDeltaX = 0
+      touchClampedDx = 0
       isDragging = true
       track.style.transition = 'none'
     },
@@ -218,10 +250,11 @@ const longCards = cards.filter((c) => c.isLong);
         return
       }
       touchDeltaX = dx
+      prepDragForPrev()
       // Live drag feedback — clamp to ±50% of card width
       const w = cardWidth()
-      const clampedDx = Math.max(-w * 0.6, Math.min(w * 0.6, dx))
-      track.style.transform = `translateX(${clampedDx}px)`
+      touchClampedDx = Math.max(-w * 0.6, Math.min(w * 0.6, dx))
+      track.style.transform = `translateX(${-w + touchClampedDx}px)`
     },
     { passive: true }
   )
@@ -230,12 +263,13 @@ const longCards = cards.filter((c) => c.isLong);
     if (!isMobile() || !isDragging) return
     isDragging = false
     if (isMoving) return
-    const threshold = cardWidth() * 0.22
-    if (touchDeltaX < -threshold) {
+    const w = cardWidth()
+    const threshold = w * 0.22
+    if (touchClampedDx < -threshold) {
       // Swipe left → next
       isMoving = true
+      unprepDrag(touchClampedDx)
       const first = track.querySelector('.testimonial-card')
-      const w = cardWidth()
       track.style.transition = 'transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94)'
       track.style.transform = `translateX(-${w}px)`
       setTimeout(() => {
@@ -246,29 +280,25 @@ const longCards = cards.filter((c) => c.isLong);
         updateDots()
         isMoving = false
       }, 350)
-    } else if (touchDeltaX > threshold) {
-      // Swipe right → prev
+    } else if (touchClampedDx > threshold) {
+      // Swipe right → prev (card is already in place from prepDragForPrev)
       isMoving = true
-      const allCards = track.querySelectorAll('.testimonial-card')
-      const last = allCards[allCards.length - 1]
-      const w = cardWidth()
-      track.style.transition = 'none'
-      track.insertBefore(last, track.firstChild)
-      track.style.transform = `translateX(-${w}px)`
-      track.offsetHeight
       track.style.transition = 'transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94)'
       track.style.transform = 'translateX(0)'
-      currentIndex = (currentIndex - 1 + TOTAL) % TOTAL
-      updateDots()
       setTimeout(() => {
+        dragPrepped = false
+        currentIndex = (currentIndex - 1 + TOTAL) % TOTAL
+        updateDots()
         isMoving = false
       }, 350)
     } else {
       // Snap back
+      unprepDrag(touchClampedDx)
       track.style.transition = 'transform 0.25s ease'
       track.style.transform = 'translateX(0)'
     }
     touchDeltaX = 0
+    touchClampedDx = 0
   })
 
   // If the gesture is interrupted (OS gesture, incoming call, tab switch, etc.)
@@ -276,8 +306,11 @@ const longCards = cards.filter((c) => c.isLong);
   track.addEventListener('touchcancel', () => {
     if (!isDragging) return
     isDragging = false
+    const dx = touchClampedDx
     touchDeltaX = 0
+    touchClampedDx = 0
     if (isMoving) return
+    unprepDrag(dx)
     track.style.transition = 'transform 0.25s ease'
     track.style.transform = 'translateX(0)'
   })
@@ -285,6 +318,7 @@ const longCards = cards.filter((c) => c.isLong);
   // ── Mouse drag (any screen width) ─────────────────────────
   let mouseStartX = 0
   let mouseDeltaX = 0
+  let mouseClampedDx = 0
   let isMouseDragging = false
 
   function isInteractiveTarget(el) {
@@ -302,9 +336,10 @@ const longCards = cards.filter((c) => c.isLong);
     const dx = e.clientX - mouseStartX
     if (Math.abs(dx) > 3) e.preventDefault()
     mouseDeltaX = dx
+    prepDragForPrev()
     const w = cardWidth()
-    const clampedDx = Math.max(-w * 0.6, Math.min(w * 0.6, dx))
-    track.style.transform = `translateX(${clampedDx}px)`
+    mouseClampedDx = Math.max(-w * 0.6, Math.min(w * 0.6, dx))
+    track.style.transform = `translateX(${-w + mouseClampedDx}px)`
   }
 
   function onMouseUp() {
@@ -313,16 +348,39 @@ const longCards = cards.filter((c) => c.isLong);
     document.removeEventListener('mousemove', onMouseMove)
     document.removeEventListener('mouseup', onMouseUp)
 
-    const threshold = cardWidth() * 0.22
-    if (mouseDeltaX < -threshold) {
-      slideNext(true)
-    } else if (mouseDeltaX > threshold) {
-      slidePrev(true)
+    const w = cardWidth()
+    const threshold = w * 0.22
+    if (mouseClampedDx < -threshold) {
+      isMoving = true
+      unprepDrag(mouseClampedDx)
+      const first = track.querySelector('.testimonial-card')
+      track.style.transition = 'transform 0.4s ease-in-out'
+      track.style.transform = `translateX(-${w}px)`
+      setTimeout(() => {
+        track.style.transition = 'none'
+        track.appendChild(first)
+        track.style.transform = 'translateX(0)'
+        currentIndex = (currentIndex + 1) % TOTAL
+        updateDots()
+        isMoving = false
+      }, 400)
+    } else if (mouseClampedDx > threshold) {
+      isMoving = true
+      track.style.transition = 'transform 0.4s ease-in-out'
+      track.style.transform = 'translateX(0)'
+      setTimeout(() => {
+        dragPrepped = false
+        currentIndex = (currentIndex - 1 + TOTAL) % TOTAL
+        updateDots()
+        isMoving = false
+      }, 400)
     } else {
+      unprepDrag(mouseClampedDx)
       track.style.transition = 'transform 0.25s ease'
       track.style.transform = 'translateX(0)'
     }
     mouseDeltaX = 0
+    mouseClampedDx = 0
   }
 
   track.addEventListener('mousedown', (e) => {
@@ -330,6 +388,7 @@ const longCards = cards.filter((c) => c.isLong);
     if (isInteractiveTarget(e.target)) return
     mouseStartX = e.clientX
     mouseDeltaX = 0
+    mouseClampedDx = 0
     isMouseDragging = true
     track.style.transition = 'none'
     document.addEventListener('mousemove', onMouseMove)
