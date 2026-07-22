@@ -269,7 +269,7 @@
   }
   .timeline-line {
     @apply absolute w-0.5;
-    left: 27px;
+    left: 20px;
     top: 10px;
     bottom: 10px;
     background: linear-gradient(
@@ -282,7 +282,7 @@
   }
   @media (max-width: 768px) {
     .timeline-line {
-      left: 24px;
+      left: 17px;
     }
   }
   .roadmap-card {
@@ -305,7 +305,7 @@
   }
   .card-icon {
     @apply absolute w-[42px] h-[42px] rounded-full flex items-center justify-center z-[2];
-    left: -50px;
+    left: -57px;
     background: var(--color-bg-main);
     border: 2px solid var(--accent-glow);
     box-shadow: 0 0 10px var(--accent-glow);
@@ -316,7 +316,7 @@
   }
   @media (max-width: 768px) {
     .card-icon {
-      left: -42px;
+      left: -50px;
       width: 34px;
       height: 34px;
     }
