@@ -66,10 +66,11 @@ export interface TestimonialItem {
 
 export const testimonials: TestimonialItem[] = [
   {
+    photo: '',
     icon: 'hugeicons:sakura',
-    name: '',
-    flag: '',
-    role: '',
+    name: '...',
+    flag: '...',
+    role: '...',
     quote:
       '" ... "',
   },
@@ -78,9 +79,9 @@ export const testimonials: TestimonialItem[] = [
   {
     photo: '',
     icon: 'healthicons:temple',
-    name: '',
-    flag: '',
-    role: '',
+    name: '...',
+    flag: '...',
+    role: '...',
     roleClass: '',
     quote:
       "\" ... \"",
@@ -88,4 +89,5 @@ export const testimonials: TestimonialItem[] = [
     quoteOriginal:
       '「 ... 」',
   },
+
 ];

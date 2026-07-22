@@ -4,7 +4,7 @@ import TestimonialCard from './TestimonialCard.astro';
 import TestimonialReviewModal from './TestimonialReviewModal.astro';
 import { testimonials } from '../data/testimonials';
 
-// Photos referenced by filename in src/data/testimonials.ts (e.g. "takuya.jpg")
+// Photos referenced by filename in src/data/testimonials.ts
 // are resolved here against every image in src/assets/avatars/.
 const avatarFiles = import.meta.glob('../assets/avatars/*.{jpg,jpeg,png,webp}', { eager: true });
 
@@ -101,6 +101,22 @@ const longCards = cards.filter((c) => c.isLong);
     return window.innerWidth <= 900
   }
 
+  // With 2 cards, the desktop layout (each card at 50% width) already shows
+  // both of them side by side at rest — there's nothing left to reveal, so
+  // navigation is pointless there. On mobile each card is full-width, so
+  // even with just 2 reviews only one shows at a time and swiping still
+  // makes sense.
+  function shouldDisableNav() {
+    return TOTAL <= 1 || (TOTAL === 2 && !isMobile())
+  }
+
+  function updateNavAvailability() {
+    const disabled = shouldDisableNav()
+    nextBtn.style.display = disabled ? 'none' : ''
+    prevBtn.style.display = disabled ? 'none' : ''
+    dotsEl.style.display = TOTAL <= 1 ? 'none' : ''
+  }
+
   // ── Dots ──────────────────────────────────────────────────
   function buildDots() {
     dotsEl.innerHTML = ''
@@ -139,7 +155,7 @@ const longCards = cards.filter((c) => c.isLong);
   }
 
   function slideNext(animate = true) {
-    if (isMoving) return
+    if (isMoving || shouldDisableNav()) return
     isMoving = true
     const first = track.querySelector('.testimonial-card')
     const w = cardWidth()
@@ -161,7 +177,7 @@ const longCards = cards.filter((c) => c.isLong);
   }
 
   function slidePrev(animate = true) {
-    if (isMoving) return
+    if (isMoving || shouldDisableNav()) return
     isMoving = true
     const allCards = track.querySelectorAll('.testimonial-card')
     const last = allCards[allCards.length - 1]
@@ -196,7 +212,9 @@ const longCards = cards.filter((c) => c.isLong);
   let dragPrepped = false
 
   function prepDragForPrev() {
-    if (dragPrepped) return
+    // With only 1 card there's nothing else to pre-stage, and doing so would
+    // just push the only card off-screen with nothing to show in its place.
+    if (dragPrepped || TOTAL <= 1) return
     const allCards = track.querySelectorAll('.testimonial-card')
     const last = allCards[allCards.length - 1]
     const w = cardWidth()
@@ -227,7 +245,7 @@ const longCards = cards.filter((c) => c.isLong);
   track.addEventListener(
     'touchstart',
     (e) => {
-      if (!isMobile() || isMoving) return
+      if (!isMobile() || isMoving || shouldDisableNav()) return
       touchStartX = e.touches[0].clientX
       touchStartY = e.touches[0].clientY
       touchDeltaX = 0
@@ -250,11 +268,20 @@ const longCards = cards.filter((c) => c.isLong);
         return
       }
       touchDeltaX = dx
-      prepDragForPrev()
       // Live drag feedback — clamp to ±50% of card width
       const w = cardWidth()
       touchClampedDx = Math.max(-w * 0.6, Math.min(w * 0.6, dx))
-      track.style.transform = `translateX(${-w + touchClampedDx}px)`
+      // Stage/unstage the "previous" card to match the live drag direction.
+      // A one-time check on the first move would stick for the whole gesture —
+      // a jittery first sample (or a reversed drag) must not leave the "next"
+      // card missing from its spot for the rest of the drag.
+      if (dx > 0) {
+        prepDragForPrev()
+      } else if (dragPrepped) {
+        unprepDrag(touchClampedDx)
+      }
+      const base = dragPrepped ? -w : 0
+      track.style.transform = `translateX(${base + touchClampedDx}px)`
     },
     { passive: true }
   )
@@ -336,10 +363,19 @@ const longCards = cards.filter((c) => c.isLong);
     const dx = e.clientX - mouseStartX
     if (Math.abs(dx) > 3) e.preventDefault()
     mouseDeltaX = dx
-    prepDragForPrev()
     const w = cardWidth()
     mouseClampedDx = Math.max(-w * 0.6, Math.min(w * 0.6, dx))
-    track.style.transform = `translateX(${-w + mouseClampedDx}px)`
+    // Stage/unstage the "previous" card to match the live drag direction.
+    // A one-time check on the first move would stick for the whole gesture —
+    // a jittery first sample (or a reversed drag) must not leave the "next"
+    // card missing from its spot for the rest of the drag.
+    if (dx > 0) {
+      prepDragForPrev()
+    } else if (dragPrepped) {
+      unprepDrag(mouseClampedDx)
+    }
+    const base = dragPrepped ? -w : 0
+    track.style.transform = `translateX(${base + mouseClampedDx}px)`
   }
 
   function onMouseUp() {
@@ -384,7 +420,7 @@ const longCards = cards.filter((c) => c.isLong);
   }
 
   track.addEventListener('mousedown', (e) => {
-    if (e.button !== 0 || isMoving || isMouseDragging) return
+    if (e.button !== 0 || isMoving || isMouseDragging || shouldDisableNav()) return
     if (isInteractiveTarget(e.target)) return
     mouseStartX = e.clientX
     mouseDeltaX = 0
@@ -402,8 +438,12 @@ const longCards = cards.filter((c) => c.isLong);
   })
 
   // ── Init ──────────────────────────────────────────────────
+  // Hide the controls instead of leaving arrows/dots that animate in place
+  // without going anywhere.
+  updateNavAvailability()
   buildDots()
   window.addEventListener('resize', () => {
+    updateNavAvailability()
     buildDots()
   })
 
