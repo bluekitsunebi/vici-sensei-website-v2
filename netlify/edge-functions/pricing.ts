@@ -14,7 +14,7 @@ export default async (request: Request, context: Context) => {
   if (country === 'RO') {
     price = '440 RON';
   } else if (country && EUROZONE_COUNTRIES.has(country)) {
-    price = '119 €';
+    price = '€119';
   }
 
   return new HTMLRewriter()
