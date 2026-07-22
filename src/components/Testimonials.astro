@@ -196,7 +196,7 @@ const longCards = cards.filter((c) => c.isLong);
   track.addEventListener(
     'touchstart',
     (e) => {
-      if (!isMobile()) return
+      if (!isMobile() || isMoving) return
       touchStartX = e.touches[0].clientX
       touchStartY = e.touches[0].clientY
       touchDeltaX = 0
@@ -271,6 +271,17 @@ const longCards = cards.filter((c) => c.isLong);
     touchDeltaX = 0
   })
 
+  // If the gesture is interrupted (OS gesture, incoming call, tab switch, etc.)
+  // touchend never fires — snap back instead of leaving the card stuck mid-drag.
+  track.addEventListener('touchcancel', () => {
+    if (!isDragging) return
+    isDragging = false
+    touchDeltaX = 0
+    if (isMoving) return
+    track.style.transition = 'transform 0.25s ease'
+    track.style.transform = 'translateX(0)'
+  })
+
   // ── Mouse drag (any screen width) ─────────────────────────
   let mouseStartX = 0
   let mouseDeltaX = 0
@@ -282,6 +293,12 @@ const longCards = cards.filter((c) => c.isLong);
 
   function onMouseMove(e) {
     if (!isMouseDragging) return
+    // Button was released outside the browser window/document, so mouseup
+    // never fired here — end the drag now instead of following the cursor forever.
+    if (e.buttons === 0) {
+      onMouseUp()
+      return
+    }
     const dx = e.clientX - mouseStartX
     if (Math.abs(dx) > 3) e.preventDefault()
     mouseDeltaX = dx
@@ -317,6 +334,12 @@ const longCards = cards.filter((c) => c.isLong);
     track.style.transition = 'none'
     document.addEventListener('mousemove', onMouseMove)
     document.addEventListener('mouseup', onMouseUp)
+  })
+
+  // Safety net for when the mouse never comes back over the page at all
+  // (e.g. released over another app after an alt-tab) so no mousemove arrives to end it.
+  window.addEventListener('blur', () => {
+    if (isMouseDragging) onMouseUp()
   })
 
   // ── Init ──────────────────────────────────────────────────
