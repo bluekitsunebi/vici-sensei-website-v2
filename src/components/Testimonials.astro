@@ -1,0 +1,459 @@
+---
+import type { ImageMetadata } from 'astro';
+import TestimonialCard from './TestimonialCard.astro';
+import TestimonialReviewModal from './TestimonialReviewModal.astro';
+import { testimonials } from '../data/testimonials';
+
+// Photos referenced by filename in src/data/testimonials.ts (e.g. "takuya.jpg")
+// are resolved here against every image in src/assets/avatars/.
+const avatarFiles = import.meta.glob('../assets/avatars/*.{jpg,jpeg,png,webp}', { eager: true });
+
+const QUOTE_LIMIT = 220;
+const MAX_DOTS = 7;
+
+const cards = testimonials.map((t, index) => ({
+  ...t,
+  index,
+  photo: t.photo ? (avatarFiles[`../assets/avatars/${t.photo}`] as { default: ImageMetadata } | undefined)?.default : undefined,
+  isLong: t.quote.length > QUOTE_LIMIT,
+}));
+
+const TOTAL = cards.length;
+const longCards = cards.filter((c) => c.isLong);
+---
+
+<section
+  id="testimonials"
+  class="section-padding relative bg-[radial-gradient(circle_at_50%_80%,rgb(0_210_255/0.05)_0%,transparent_60%)]"
+>
+  <div class="site-container">
+    <div class="header-center">
+      <span class="badge blue">VERIFIED SOCIAL PROOF</span>
+      <h2 class="main-title">Real Stories. Real Fluency.</h2>
+      <p class="subtitle">
+        Listen to active self-learners and native Japanese speakers break down the impact of our
+        conversational systems.
+      </p>
+    </div>
+
+    <div class="relative mx-auto max-w-[1000px] px-10 max-[900px]:px-5">
+      <button class="testimonial-carousel-btn prev left-[-10px]" aria-label="Previous slide">
+        <svg
+          class="h-5 w-5 shrink-0 stroke-current"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg
+        >
+      </button>
+      <button class="testimonial-carousel-btn next right-[-10px]" aria-label="Next slide">
+        <svg
+          class="h-5 w-5 shrink-0 stroke-current"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg
+        >
+      </button>
+
+      <div class="w-full overflow-hidden py-5 [touch-action:pan-y]">
+        <div
+          class="carousel-track flex select-none gap-[30px] will-change-transform cursor-grab active:cursor-grabbing"
+          id="carouselTrack"
+        >
+          {cards.map((c) => <TestimonialCard {...c} />)}
+        </div>
+      </div>
+
+      <!-- Mobile dots indicator -->
+      <div
+        class="carousel-dots hidden max-[900px]:flex max-[900px]:flex-wrap max-[900px]:items-center max-[900px]:justify-center max-[900px]:gap-2 max-[900px]:px-4 max-[900px]:mt-5"
+        id="carouselDots"
+        role="group"
+        aria-label="Testimonial slide navigation"
+      >
+      </div>
+    </div>
+  </div>
+
+  <div class="testimonial-modal-overlay" id="reviewModalOverlay">
+    {longCards.map((c) => <TestimonialReviewModal {...c} />)}
+  </div>
+</section>
+
+<script define:vars={{ TOTAL, MAX_DOTS }}>
+  // ── Carousel ──────────────────────────────────────────────
+  const track = document.getElementById('carouselTrack')
+  const nextBtn = document.querySelector('.testimonial-carousel-btn.next')
+  const prevBtn = document.querySelector('.testimonial-carousel-btn.prev')
+  const dotsEl = document.getElementById('carouselDots')
+  let isMoving = false
+  let currentIndex = 0
+  const GAP = 30
+
+  function cardWidth() {
+    return track.querySelector('.testimonial-card').getBoundingClientRect().width + GAP
+  }
+
+  function isMobile() {
+    return window.innerWidth <= 900
+  }
+
+  // ── Dots ──────────────────────────────────────────────────
+  function buildDots() {
+    dotsEl.innerHTML = ''
+    const count = Math.min(TOTAL, MAX_DOTS)
+    for (let i = 0; i < count; i++) {
+      const dot = document.createElement('button')
+      dot.className = 'testimonial-dot'
+      dot.setAttribute('aria-label', `Slide ${i + 1}`)
+      dot.setAttribute('aria-current', 'false')
+      dot.addEventListener('click', () => goToIndex(i))
+      dotsEl.appendChild(dot)
+    }
+    updateDots()
+  }
+
+  function updateDots() {
+    if (!isMobile()) return
+    const dots = dotsEl.querySelectorAll('.testimonial-dot')
+    const displayIndex = currentIndex % Math.min(TOTAL, MAX_DOTS)
+    dots.forEach((dot, i) => {
+      const active = i === displayIndex
+      dot.classList.toggle('active', active)
+      dot.setAttribute('aria-current', active ? 'true' : 'false')
+    })
+  }
+
+  function goToIndex(targetIndex) {
+    if (isMoving || !isMobile()) return
+    const diff = targetIndex - (currentIndex % Math.min(TOTAL, MAX_DOTS))
+    if (diff === 0) return
+    if (diff > 0) {
+      for (let i = 0; i < diff; i++) slideNext(i === diff - 1)
+    } else {
+      for (let i = 0; i < -diff; i++) slidePrev(i === -diff - 1)
+    }
+  }
+
+  function slideNext(animate = true) {
+    if (isMoving) return
+    isMoving = true
+    const first = track.querySelector('.testimonial-card')
+    const w = cardWidth()
+    track.style.transition = animate ? 'transform 0.4s ease-in-out' : 'none'
+    track.style.transform = `translateX(-${w}px)`
+    const finish = () => {
+      track.style.transition = 'none'
+      track.appendChild(first)
+      track.style.transform = 'translateX(0)'
+      currentIndex = (currentIndex + 1) % TOTAL
+      updateDots()
+      isMoving = false
+    }
+    if (animate) {
+      setTimeout(finish, 400)
+    } else {
+      finish()
+    }
+  }
+
+  function slidePrev(animate = true) {
+    if (isMoving) return
+    isMoving = true
+    const allCards = track.querySelectorAll('.testimonial-card')
+    const last = allCards[allCards.length - 1]
+    const w = cardWidth()
+    track.style.transition = 'none'
+    track.insertBefore(last, track.firstChild)
+    track.style.transform = `translateX(-${w}px)`
+    track.offsetHeight
+    track.style.transition = animate ? 'transform 0.4s ease-in-out' : 'none'
+    track.style.transform = 'translateX(0)'
+    const finish = () => {
+      currentIndex = (currentIndex - 1 + TOTAL) % TOTAL
+      updateDots()
+      isMoving = false
+    }
+    if (animate) {
+      setTimeout(finish, 400)
+    } else {
+      finish()
+    }
+  }
+
+  nextBtn.addEventListener('click', () => slideNext(true))
+  prevBtn.addEventListener('click', () => slidePrev(true))
+
+  // ── Touch / Swipe (mobile only) ───────────────────────────
+  let touchStartX = 0
+  let touchStartY = 0
+  let touchDeltaX = 0
+  let isDragging = false
+
+  track.addEventListener(
+    'touchstart',
+    (e) => {
+      if (!isMobile()) return
+      touchStartX = e.touches[0].clientX
+      touchStartY = e.touches[0].clientY
+      touchDeltaX = 0
+      isDragging = true
+      track.style.transition = 'none'
+    },
+    { passive: true }
+  )
+
+  track.addEventListener(
+    'touchmove',
+    (e) => {
+      if (!isMobile() || !isDragging) return
+      const dx = e.touches[0].clientX - touchStartX
+      const dy = e.touches[0].clientY - touchStartY
+      // If mostly vertical scroll, don't interfere
+      if (Math.abs(dy) > Math.abs(dx) && Math.abs(touchDeltaX) < 10) {
+        isDragging = false
+        return
+      }
+      touchDeltaX = dx
+      // Live drag feedback — clamp to ±50% of card width
+      const w = cardWidth()
+      const clampedDx = Math.max(-w * 0.6, Math.min(w * 0.6, dx))
+      track.style.transform = `translateX(${clampedDx}px)`
+    },
+    { passive: true }
+  )
+
+  track.addEventListener('touchend', () => {
+    if (!isMobile() || !isDragging) return
+    isDragging = false
+    if (isMoving) return
+    const threshold = cardWidth() * 0.22
+    if (touchDeltaX < -threshold) {
+      // Swipe left → next
+      isMoving = true
+      const first = track.querySelector('.testimonial-card')
+      const w = cardWidth()
+      track.style.transition = 'transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94)'
+      track.style.transform = `translateX(-${w}px)`
+      setTimeout(() => {
+        track.style.transition = 'none'
+        track.appendChild(first)
+        track.style.transform = 'translateX(0)'
+        currentIndex = (currentIndex + 1) % TOTAL
+        updateDots()
+        isMoving = false
+      }, 350)
+    } else if (touchDeltaX > threshold) {
+      // Swipe right → prev
+      isMoving = true
+      const allCards = track.querySelectorAll('.testimonial-card')
+      const last = allCards[allCards.length - 1]
+      const w = cardWidth()
+      track.style.transition = 'none'
+      track.insertBefore(last, track.firstChild)
+      track.style.transform = `translateX(-${w}px)`
+      track.offsetHeight
+      track.style.transition = 'transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94)'
+      track.style.transform = 'translateX(0)'
+      currentIndex = (currentIndex - 1 + TOTAL) % TOTAL
+      updateDots()
+      setTimeout(() => {
+        isMoving = false
+      }, 350)
+    } else {
+      // Snap back
+      track.style.transition = 'transform 0.25s ease'
+      track.style.transform = 'translateX(0)'
+    }
+    touchDeltaX = 0
+  })
+
+  // ── Mouse drag (any screen width) ─────────────────────────
+  let mouseStartX = 0
+  let mouseDeltaX = 0
+  let isMouseDragging = false
+
+  function isInteractiveTarget(el) {
+    return !!el.closest('button, a, input, textarea, select, [role="button"]')
+  }
+
+  function onMouseMove(e) {
+    if (!isMouseDragging) return
+    const dx = e.clientX - mouseStartX
+    if (Math.abs(dx) > 3) e.preventDefault()
+    mouseDeltaX = dx
+    const w = cardWidth()
+    const clampedDx = Math.max(-w * 0.6, Math.min(w * 0.6, dx))
+    track.style.transform = `translateX(${clampedDx}px)`
+  }
+
+  function onMouseUp() {
+    if (!isMouseDragging) return
+    isMouseDragging = false
+    document.removeEventListener('mousemove', onMouseMove)
+    document.removeEventListener('mouseup', onMouseUp)
+
+    const threshold = cardWidth() * 0.22
+    if (mouseDeltaX < -threshold) {
+      slideNext(true)
+    } else if (mouseDeltaX > threshold) {
+      slidePrev(true)
+    } else {
+      track.style.transition = 'transform 0.25s ease'
+      track.style.transform = 'translateX(0)'
+    }
+    mouseDeltaX = 0
+  }
+
+  track.addEventListener('mousedown', (e) => {
+    if (e.button !== 0 || isMoving || isMouseDragging) return
+    if (isInteractiveTarget(e.target)) return
+    mouseStartX = e.clientX
+    mouseDeltaX = 0
+    isMouseDragging = true
+    track.style.transition = 'none'
+    document.addEventListener('mousemove', onMouseMove)
+    document.addEventListener('mouseup', onMouseUp)
+  })
+
+  // ── Init ──────────────────────────────────────────────────
+  buildDots()
+  window.addEventListener('resize', () => {
+    buildDots()
+  })
+
+  // ── Review modal ──────────────────────────────────────────
+  const modalOverlay = document.getElementById('reviewModalOverlay')
+  const modals = Array.from(document.querySelectorAll('.testimonial-modal'))
+  let activeModal = null
+  let lastFocusedEl = null
+
+  function getFocusableEls(container) {
+    return Array.from(
+      container.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')
+    )
+  }
+
+  function openReviewModal(index, triggerEl) {
+    const modal = modals.find((m) => Number(m.dataset.index) === index)
+    if (!modal) return
+    lastFocusedEl = triggerEl ?? document.activeElement
+
+    modals.forEach((m) => m.classList.toggle('open', m === modal))
+    activeModal = modal
+
+    modalOverlay.classList.add('open')
+    document.body.classList.add('overflow-hidden')
+    modal.querySelector('[data-close]')?.focus()
+  }
+
+  function closeReviewModal() {
+    if (!activeModal) return
+    modalOverlay.classList.remove('open')
+    activeModal.classList.remove('open')
+    document.body.classList.remove('overflow-hidden')
+    lastFocusedEl?.focus()
+    lastFocusedEl = null
+    activeModal = null
+  }
+
+  document.querySelectorAll('.see-more-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation()
+      openReviewModal(Number(btn.dataset.index), btn)
+    })
+  })
+
+  // ── Translated quote toggle ───────────────────────────────
+  // A testimonial can appear twice (card + review modal), sharing the same
+  // data-index — keep both "see original" buttons and quotes in sync.
+  document.querySelectorAll('.see-original-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation()
+      const index = btn.closest('[data-index]')?.dataset.index
+      if (index === undefined) return
+      const showOriginal = btn.dataset.state !== 'original'
+      document.querySelectorAll(`[data-index="${index}"] .see-original-btn`).forEach((b) => {
+        const quoteText = b.closest('.testimonial-card, .testimonial-modal')?.querySelector('.quote-text')
+        if (!quoteText) return
+        quoteText.textContent = showOriginal ? quoteText.dataset.original : quoteText.dataset.translated
+        b.dataset.state = showOriginal ? 'original' : 'translated'
+        b.textContent = showOriginal ? 'see translation' : 'see original'
+      })
+    })
+  })
+
+  // Device type (not viewport width) — real touch/mobile hardware only
+  function isMobileDevice() {
+    if (navigator.userAgentData && typeof navigator.userAgentData.mobile === 'boolean') {
+      return navigator.userAgentData.mobile
+    }
+    return /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Windows Phone/i.test(navigator.userAgent)
+  }
+
+  if (isMobileDevice()) {
+    document.querySelectorAll('.testimonial-card.has-more').forEach((card) => {
+      card.classList.add('cursor-pointer')
+      card.addEventListener('click', () => {
+        openReviewModal(Number(card.dataset.index), card)
+      })
+    })
+
+    // Move "see original" / "See more" into one bottom row, styled as pill buttons.
+    document.querySelectorAll('.testimonial-card').forEach((card) => {
+      const actionsRow = card.querySelector('.testimonial-mobile-actions')
+      const seeOriginalBtn = card.querySelector('.see-original-btn')
+      const seeMoreBtn = card.querySelector('.see-more-btn')
+      if (!actionsRow || (!seeOriginalBtn && !seeMoreBtn)) return
+
+      if (seeOriginalBtn) {
+        seeOriginalBtn.classList.remove(
+          'text-white/25',
+          'hover:text-white/30',
+          'hover:underline',
+          'p-0',
+          'bg-transparent',
+          'shrink-0'
+        )
+        seeOriginalBtn.classList.add('mobile-pill-btn')
+        actionsRow.appendChild(seeOriginalBtn)
+      }
+      if (seeMoreBtn) {
+        seeMoreBtn.classList.remove('-mt-2', 'self-start', 'p-0', 'bg-transparent', 'hover:underline')
+        seeMoreBtn.classList.add('mobile-pill-btn', 'mobile-pill-btn-accent')
+        actionsRow.appendChild(seeMoreBtn)
+      }
+    })
+  }
+
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) {
+      closeReviewModal()
+      return
+    }
+    if (e.target.closest('[data-close]')) closeReviewModal()
+  })
+  document.addEventListener('keydown', (e) => {
+    if (!activeModal || !modalOverlay.classList.contains('open')) return
+    if (e.key === 'Escape') {
+      closeReviewModal()
+      return
+    }
+    if (e.key === 'Tab') {
+      const focusables = getFocusableEls(activeModal)
+      if (focusables.length === 0) return
+      const first = focusables[0]
+      const last = focusables[focusables.length - 1]
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
+  })
+</script>

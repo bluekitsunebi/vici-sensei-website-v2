@@ -10,7 +10,11 @@
   },
   "dependencies": {
     "@iconify-json/fa6-solid": "^1.2.4",
+    "@iconify-json/game-icons": "^1.2.4",
+    "@iconify-json/healthicons": "^1.2.12",
+    "@iconify-json/hugeicons": "^1.2.31",
     "@iconify-json/mdi": "^1.2.3",
+    "@iconify-json/pinhead": "^1.2.11",
     "@iconify-json/simple-icons": "^1.2.91",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^5.0.0",

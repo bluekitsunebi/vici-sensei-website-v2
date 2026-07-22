@@ -1,0 +1,89 @@
+---
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+export interface Props {
+  name: string;
+  flag: string;
+  role: string;
+  roleClass?: string;
+  quote: string;
+  translated?: boolean;
+  quoteOriginal?: string;
+  icon: string;
+  photo?: ImageMetadata;
+  index: number;
+}
+
+const {
+  name,
+  flag,
+  role,
+  roleClass = 'text-accent-blue',
+  quote,
+  translated = false,
+  quoteOriginal,
+  icon,
+  photo,
+  index,
+} = Astro.props;
+---
+
+<div
+  class="testimonial-modal"
+  data-index={index}
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby={`testimonialModalName-${index}`}
+>
+  <button class="testimonial-modal-close" data-close aria-label="Close review" type="button">
+    <Icon name="mdi:close" class="h-5 w-5" aria-hidden="true" />
+  </button>
+  <div class="flex items-center gap-[14px]">
+    {
+      photo ? (
+        <Image src={photo} alt={name} width={96} height={96} class="testimonial-avatar-photo" />
+      ) : (
+        <div class="testimonial-avatar-fallback">
+          <Icon name={icon} class="h-6 w-6" aria-hidden="true" />
+        </div>
+      )
+    }
+    <div>
+      <h4 class="flex items-center gap-1.5 text-[1.05rem] font-bold text-white" id={`testimonialModalName-${index}`}>
+        {name} <span class="text-[0.95rem]">{flag}</span>
+      </h4>
+      <p class={`text-[0.85rem] font-semibold ${roleClass}`}>{role}</p>
+    </div>
+  </div>
+  <div class="flex items-center gap-1" aria-label="5 out of 5 stars">
+    {
+      Array.from({ length: 5 }).map(() => (
+        <Icon name="mdi:star" class="h-[18px] w-[18px] text-accent-gold" aria-hidden="true" />
+      ))
+    }
+    <span class="ml-1.5 text-[0.85rem] font-bold text-text-muted">5.0/5.0</span>
+  </div>
+  <div class="quote-block flex flex-col gap-2">
+    {
+      translated && (
+        <span class="flex flex-wrap items-center justify-between gap-x-2 gap-y-0.5 text-[0.75rem] text-white/25">
+          <span>(Translated from Japanese)</span>
+          <button
+            type="button"
+            class="see-original-btn shrink-0 cursor-pointer bg-transparent p-0 font-bold text-white/25 hover:text-white/30 hover:underline"
+            data-state="translated"
+          >
+            see original
+          </button>
+        </span>
+      )
+    }
+    <p class="text-[1rem] leading-[1.6] text-text-muted italic">
+      <span class="quote-text" data-translated={quote} data-original={quoteOriginal}>
+        {quote}
+      </span>
+    </p>
+  </div>
+</div>
