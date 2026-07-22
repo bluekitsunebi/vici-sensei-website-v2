@@ -17,7 +17,7 @@ import ContactCard from './ContactCard.astro';
         name="Discord"
         handle="vici5287"
         description="Got questions or want to enroll? Drop me a message or a friend request and I will answer as soon as possible."
-        actionText="Connect on Discord →"
+        actionText="Connect on Discord"
         href="https://discord.com/users/114122034321031175"
       >
         <Fragment slot="icon">
@@ -30,7 +30,7 @@ import ContactCard from './ContactCard.astro';
         name="WhatsApp"
         handle="+40 745 984 726"
         description="Have personal questions about the mentorship structure or enrollment availability? Let's chat directly."
-        actionText="Message Directly →"
+        actionText="Message Directly"
         href="https://web.whatsapp.com/send?phone=40745984726"
         mobileHref="https://wa.me/40745984726"
       >
@@ -44,7 +44,7 @@ import ContactCard from './ContactCard.astro';
         name="Gmail"
         handle="vici.sensei@gmail.com"
         description="Prefer email? Send me a detailed message and I'll follow up with everything you need to know."
-        actionText="Send an Email →"
+        actionText="Send an Email"
         href="https://mail.google.com/mail/?view=cm&fs=1&to=vici.sensei@gmail.com&su=Japanese+Mentorship+Program+Inquiry"
         androidHref="intent://vici.sensei@gmail.com?subject=Japanese%20Mentorship%20Program%20Inquiry#Intent;scheme=mailto;package=com.google.android.gm;S.browser_fallback_url=https%3A%2F%2Fmail.google.com%2Fmail%2F%3Fview%3Dcm%26fs%3D1%26to%3Dvici.sensei%2540gmail.com%26su%3DJapanese%2BMentorship%2BProgram%2BInquiry;end"
         iosAppHref="googlegmail:///co?to=vici.sensei@gmail.com&subject=Japanese%20Mentorship%20Program%20Inquiry"
@@ -107,6 +107,21 @@ import ContactCard from './ContactCard.astro';
             window.open(link.href, '_blank', 'noopener,noreferrer');
           }
         }, 900);
+      });
+    });
+  }
+
+  // On mobile, make the whole card tappable instead of just the small action
+  // link — forward the tap to the real link/button so all its existing
+  // behavior (app deep-links, clipboard copy, etc.) still runs unchanged.
+  if (isIOS || isAndroid) {
+    document.querySelectorAll<HTMLElement>('.contact-card').forEach((card) => {
+      const actionEl = card.querySelector<HTMLElement>('.action-text');
+      if (!actionEl) return;
+
+      card.addEventListener('click', (event) => {
+        if (actionEl.contains(event.target as Node)) return;
+        actionEl.click();
       });
     });
   }

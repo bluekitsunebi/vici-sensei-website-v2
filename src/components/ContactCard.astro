@@ -1,4 +1,6 @@
 ---
+import { Icon } from 'astro-icon/components';
+
 export interface Props {
   accent: string;
   name: string;
@@ -25,7 +27,10 @@ const { accent, name, handle, description, actionText, href, copyValue, handleCo
   <p class="handle" style={handleColor ? `color: ${handleColor}; filter: none;` : undefined}>{handle}</p>
   <p class="description">{description}</p>
   {copyValue ? (
-    <button type="button" class="action-text" data-copy={copyValue} data-default-text={actionText}>{actionText}</button>
+    <button type="button" class="action-text" data-copy={copyValue} data-default-text={actionText}>
+      {actionText}
+      <Icon name="mdi:arrow-right" class="action-arrow" />
+    </button>
   ) : (
     <a
       href={href}
@@ -35,6 +40,9 @@ const { accent, name, handle, description, actionText, href, copyValue, handleCo
       data-mobile-href={mobileHref}
       data-android-href={androidHref}
       data-ios-app-href={iosAppHref}
-    >{actionText}</a>
+    >
+      {actionText}
+      <Icon name="mdi:arrow-right" class="action-arrow" />
+    </a>
   )}
 </div>

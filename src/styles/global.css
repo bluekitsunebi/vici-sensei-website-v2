@@ -265,11 +265,11 @@
 
   /* ROADMAP TIMELINE */
   .glow-timeline {
-    @apply relative flex flex-col gap-10 pl-10 max-md:pl-[30px];
+    @apply relative flex flex-col gap-10 pl-14 max-md:pl-[50px];
   }
   .timeline-line {
     @apply absolute w-0.5;
-    left: 10px;
+    left: 27px;
     top: 10px;
     bottom: 10px;
     background: linear-gradient(
@@ -282,7 +282,7 @@
   }
   @media (max-width: 768px) {
     .timeline-line {
-      left: 5px;
+      left: 24px;
     }
   }
   .roadmap-card {
@@ -304,24 +304,24 @@
     box-shadow: 0 0 15px rgb(255 34 0 / 0.5);
   }
   .card-icon {
-    @apply absolute w-[26px] h-[26px] rounded-full flex items-center justify-center z-[2];
-    left: -44px;
+    @apply absolute w-[42px] h-[42px] rounded-full flex items-center justify-center z-[2];
+    left: -50px;
     background: var(--color-bg-main);
     border: 2px solid var(--accent-glow);
     box-shadow: 0 0 10px var(--accent-glow);
   }
   .card-icon svg {
-    @apply w-[14px] h-[14px];
+    @apply w-[20px] h-[20px];
     color: var(--accent-glow);
   }
   @media (max-width: 768px) {
     .card-icon {
-      left: -36px;
-      width: 22px;
-      height: 22px;
+      left: -42px;
+      width: 34px;
+      height: 34px;
     }
     .card-icon svg {
-      @apply w-[12px] h-[12px];
+      @apply w-[18px] h-[18px];
     }
     .card-title-row {
       @apply flex-col items-start gap-2;
@@ -449,8 +449,11 @@
     @apply text-text-muted leading-[1.6] mb-6;
   }
   .action-text {
-    @apply text-white font-bold text-[0.95rem] inline-flex items-center;
+    @apply text-white font-bold text-[0.95rem] inline-flex items-center gap-1.5;
     transition: transform 0.2s ease, color 0.2s ease;
+  }
+  .action-arrow {
+    @apply w-4 h-4;
   }
   button.action-text {
     @apply bg-transparent border-none p-0 cursor-pointer;
